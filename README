@@ -7,7 +7,7 @@ This plugin generates a config file and locale files for Rails 2.2 i18n feature.
 Installation
 =======
 
-% ./script/plugin install git://github/amatsuda/i18n_generator.git
+% ./script/plugin install git://github.com/amatsuda/i18n_generator.git
 
 
 Example
@@ -46,5 +46,4 @@ Todo
 * Merging with the existing locale file.
 
 
-Copyright (c) 2008 [Akira Matsuda], released under the MIT license
-
+Copyright (c) 2008  Akira Matsuda, released under the MIT license

@@ -3,7 +3,7 @@ require 'yaml'
 class YamlParser
   def initialize(yml_path, locale_name)
     @locale_name, @nodes = locale_name, []
-    File.read(yml_path).each_line.each_with_index do |line_text, i|
+    File.read(yml_path).each_with_index do |line_text, i|
       n = Node.new(self, i, line_text.chomp)
       @nodes << (n.key == 'en-US' ? Node.new(self, i, "#{locale_name}:") : n)
     end
@@ -43,7 +43,7 @@ class YamlParser
   end
 
   def [](node_name)
-    @current_line = @nodes.index {|n| (n.indent_level == 0) && (n.key == node_name)}
+    @current_line = @nodes.detect {|n| (n.indent_level == 0) && (n.key == node_name)}.line
     @nodes[@current_line]
   end
 

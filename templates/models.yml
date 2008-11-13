@@ -1,0 +1,16 @@
+<%= locale_name %>:
+  activerecord:
+    models:
+<% models.each do |model| -%>
+      <%= "#{model.english_name}: #{model.translated_name}" %>
+<% end -%>
+    attributes:
+<% models.each do |model| -%>
+      <%= "#{model.english_name}:" %>
+<%   model.content_columns.each do |col| -%>
+<%     unless %w[created_at updated_at].include?(col.name) -%>
+        <%= "#{col.name}: #{col.translated_name}" %>
+<%     end -%>
+<%   end -%>
+<% end -%>
+

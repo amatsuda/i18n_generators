@@ -10,7 +10,7 @@ module I18nGenerator::Generator
   module Commands #:nodoc:
     module Create
       def execute(locale_name)
-        template relative_template_path('i18n_config.rb'), 'config/initializers/i18n_config.rb', :assigns => {:locale_name => locale_name}
+        template 'i18n_config.rb', 'config/initializers/i18n_config.rb', :assigns => {:locale_name => locale_name}
 
         GetText.bindtextdomain 'rails'
         GetText.locale = locale_name
@@ -71,7 +71,7 @@ module I18nGenerator::Generator
         original_yml = I18n.load_path.detect {|lp| lp =~ /\/lib\/#{filename_base}\/locale\/en-US\.yml$/}
         doc = YamlDocument.new(original_yml, locale_name)
         yield doc
-        file(relative_template_path('base.yml'), "lib/locale/#{filename_base}_#{locale_name}.yml") do |f|
+        file('base.yml', "lib/locale/#{filename_base}_#{locale_name}.yml") do |f|
           doc.to_s
         end
       end
@@ -89,13 +89,6 @@ module I18nGenerator::Generator
       def translate_one_and_other(values)
         values = values.map {|v| v.is_a?(Node) ? v.value : v}
         [transfer_format(values) {|v| GetText.n_(v.first, v.second, 1)}, transfer_format(values) {|v| GetText.n_(v.first, v.second, 2)}]
-      end
-
-      #FIXME
-      # adhoc logic to absorb the difference of source_root directory
-      def relative_template_path(filename)
-        template_dir = ((dirs = source_root.split('/'))[-3] == 'generators' && dirs[-2] == 'i18n') ? '' : '../generators/i18n/templates'
-        File.join template_dir, filename
       end
     end
   end

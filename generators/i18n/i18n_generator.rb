@@ -1,4 +1,5 @@
 require 'rubygems'
+require 'rails_generator'
 require 'gettext'
 
 class I18nGenerator < Rails::Generator::NamedBase
@@ -13,4 +14,7 @@ class I18nGenerator < Rails::Generator::NamedBase
     end
   end
 end
+
+require File.join(File.dirname(__FILE__), 'commands')
+Rails::Generator::Commands::Create.send :include, I18nGenerator::Generator::Commands::Create
 

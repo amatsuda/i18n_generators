@@ -1,0 +1,12 @@
+Description:
+    Generates a config file and locale files for Rails i18n feature.
+
+Example:
+    ./script/generate i18n locale_name (ja-JP, de-AT, etc.)
+
+    This will create:
+        config/initializers/i18n_config.rb
+        lib/locale/action_view_ja-JP.yml
+        lib/locale/active_record_ja-JP.yml
+        lib/locale/active_support_ja-JP.yml
+

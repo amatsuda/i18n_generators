@@ -2,8 +2,11 @@ require 'rails_generator'
 require 'rails_generator/commands'
 require 'rubygems'
 require 'gettext'
+require File.join(File.dirname(__FILE__), 'i18n/lib/yaml')
+require File.join(File.dirname(__FILE__), 'i18n/lib/cldr')
+include I18nGeneratorModule
 
-module I18n::Generator
+module I18nGenerator::Generator
   module Commands #:nodoc:
     module Create
       def execute(locale_name)
@@ -13,7 +16,7 @@ module I18n::Generator
         GetText.locale = locale_name
 
         # active_support
-        cldr = CldrParser.new locale_name
+        cldr = CldrDocument.new locale_name
         open_yaml('active_support', locale_name) do |yaml|
           yaml[locale_name].descendant_nodes do |node|
             v = cldr.lookup(node.path)
@@ -66,10 +69,10 @@ module I18n::Generator
       private
       def open_yaml(filename_base, locale_name)
         original_yml = I18n.load_path.detect {|lp| lp =~ /\/lib\/#{filename_base}\/locale\/en-US\.yml$/}
-        parser = YamlParser.new(original_yml, locale_name)
-        yield parser
+        doc = YamlDocument.new(original_yml, locale_name)
+        yield doc
         file('base.yml', "lib/locale/#{filename_base}_#{locale_name}.yml") do |f|
-          parser.to_s
+          doc.to_s
         end
       end
 

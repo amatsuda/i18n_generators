@@ -1,12 +1,12 @@
 $KCODE = 'U'
 
-$LOAD_PATH << "#{File.dirname(__FILE__)}/../lib/"
-require 'cldr_parser'
+require File.join(File.dirname(__FILE__), '../generators/i18n/lib/cldr')
+include I18nGeneratorModule
 
-describe CldrParser do
+describe CldrDocument do
   before do
-    OpenURI.stub!(:open_uri).and_return(File.open("#{File.dirname(__FILE__)}/data/cldr/ja.html"))
-    @cldr = CldrParser.new 'ja-JP'
+    OpenURI.stub!(:open_uri).and_return(File.open(File.join(File.dirname(__FILE__), 'data/cldr/ja.html')))
+    @cldr = CldrDocument.new 'ja-JP'
   end
 
   it 'fetches date/formats/default value' do

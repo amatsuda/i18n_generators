@@ -1,12 +1,12 @@
-$LOAD_PATH << "#{File.dirname(__FILE__)}/../lib/"
-require "yaml_parser"
+require File.join(File.dirname(__FILE__), '/../generators/i18n/lib/yaml')
+include I18nGeneratorModule
 
-describe 'YamlParser' do
+describe 'Yaml' do
   before do
-    @yaml = YamlParser.new "#{File.dirname(__FILE__)}/data/yml/active_record/en-US.yml", 'ja-JP'
+    @yaml = YamlDocument.new File.join(File.dirname(__FILE__), 'data/yml/active_record/en-US.yml'), 'ja-JP'
   end
 
-  describe YamlParser do
+  describe YamlDocument do
     it 'should return the top level node with the square bracket method' do
       node = @yaml['ja-JP']
       node.should be_an_instance_of(Node)

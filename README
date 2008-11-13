@@ -44,6 +44,7 @@ Todo
 * More accurate format tranlation.
 * Download the XML data file via CLDR website and store in tmp directory.
 * Merging with the existing locale file.
+* Currency sign
 
 
 Copyright (c) 2008  Akira Matsuda, released under the MIT license

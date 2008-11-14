@@ -4,28 +4,22 @@ require 'rubygems'
 require 'gettext'
 require File.join(File.dirname(__FILE__), 'lib/yaml')
 require File.join(File.dirname(__FILE__), 'lib/cldr')
-include I18nGeneratorModule
+include I18nLocalesGeneratorModule
 
 module I18nGenerator::Generator
   module Commands #:nodoc:
     module Create
-      def execute(locale_name)
-        template 'i18n_config.rb', 'config/initializers/i18n_config.rb', :assigns => {:locale_name => locale_name}
-
-        GetText.bindtextdomain 'rails'
-        GetText.locale = locale_name
-
-        # active_support
-        cldr = CldrDocument.new locale_name
-        open_yaml('active_support', locale_name) do |yaml|
+      def active_support_yaml
+        open_yaml('active_support') do |yaml|
           yaml[locale_name].descendant_nodes do |node|
             v = cldr.lookup(node.path)
             node.value = v if !v.nil? && !(v.is_a?(Array) && v.any? {|e| e.nil?})
           end
         end
+      end
 
-        # active_record
-        open_yaml('active_record', locale_name) do |yaml|
+      def active_record_yaml
+        open_yaml('active_record') do |yaml|
           yaml[locale_name]['activerecord']['errors']['messages'].children.each do |node|
             unless node.value.nil?
               node.value = transfer_format('%{fn} ' + node.value.gsub('{{count}}', '%d')) do |v|
@@ -34,9 +28,10 @@ module I18nGenerator::Generator
             end
           end
         end
+      end
 
-        # action_view
-        open_yaml('action_view', locale_name) do |yaml|
+      def action_view_yaml
+        open_yaml('action_view') do |yaml|
           yaml[locale_name]['datetime']['distance_in_words'].children.each do |node|
             if !node.value.nil?
               node.value = GetText._(node.value)
@@ -67,7 +62,7 @@ module I18nGenerator::Generator
       end
 
       private
-      def open_yaml(filename_base, locale_name)
+      def open_yaml(filename_base)
         original_yml = I18n.load_path.detect {|lp| lp =~ /\/lib\/#{filename_base}\/locale\/en-US\.yml$/}
         doc = YamlDocument.new(original_yml, locale_name)
         yield doc

@@ -1,12 +1,12 @@
 require 'rails_generator'
 require 'rails_generator/commands'
 require File.join(File.dirname(__FILE__), 'lib/translator')
-include I18nModelGeneratorModule
+include I18nModelsGeneratorModule
 
-module I18nModelGenerator::Generator
+module I18nGenerator::Generator
   module Commands #:nodoc:
     module Create
-      def execute(locale_name)
+      def models_yaml
         models = Dir.chdir("#{RAILS_ROOT}/app/models/") do
           Dir["**/*.rb"].map {|m| m.sub(/\.rb$/, '').capitalize.constantize}
         end

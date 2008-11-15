@@ -7,7 +7,13 @@ This plugin generates a config file and locale files for Rails 2.2 i18n feature.
 Installation
 =======
 
-% ./script/plugin install git://github.com/amatsuda/i18n_generator.git
+As a gem
+
+% sudo gem install amatsuda-i18n_generators -s http://gems.github.com
+
+As a Rails plugin
+
+% ./script/plugin install git://github.com/amatsuda/i18n_generators.git
 
 
 Example

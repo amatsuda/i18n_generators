@@ -1,4 +1,3 @@
-require File.join(File.dirname(__FILE__), '../generators/i18n/commands')
+require File.join(File.dirname(__FILE__), '../i18n_generator')
 
-Rails::Generator::Commands::Create.send :include, I18nGenerator::Generator::Commands::Create
 

@@ -1,9 +1,10 @@
-require 'rubygems'
 require 'rails_generator'
+require 'rails_generator/commands'
+require 'rubygems'
 require 'gettext'
 
 class I18nGenerator < Rails::Generator::NamedBase
-  attr_reader :locale_name, :cldr
+  attr_reader :locale_name, :cldr, :generate_models_only, :generate_locales_only
 
   def initialize(runtime_args, runtime_options = {})
     super
@@ -21,12 +22,16 @@ class I18nGenerator < Rails::Generator::NamedBase
   def manifest
     record do |m|
       m.directory 'lib/locale'
-      m.template 'i18n_config.rb', 'config/initializers/i18n_config.rb', :assigns => {:locale_name => @locale_name}
-      m.active_support_yaml
-      m.active_record_yaml
-      m.action_view_yaml
-
-      m.models_yaml
+      unless self.generate_models_only
+        m.template 'i18n:i18n_config.rb', 'config/initializers/i18n_config.rb', :assigns => {:locale_name => @locale_name}
+        m.active_support_yaml
+        m.active_record_yaml
+        m.action_view_yaml
+      end
+      unless self.generate_locales_only
+        m.directory 'lib/locale'
+        m.models_yaml
+      end
     end
   end
 end

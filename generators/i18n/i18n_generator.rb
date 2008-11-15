@@ -29,10 +29,13 @@ class I18nGenerator < Rails::Generator::NamedBase
         m.action_view_yaml
       end
       unless self.generate_locales_only
-        m.directory 'lib/locale'
         m.models_yaml
       end
     end
   end
 end
+
+require File.join(File.dirname(__FILE__), '../i18n_locales/i18n_locales_command')
+require File.join(File.dirname(__FILE__), '../i18n_models/i18n_models_command')
+Rails::Generator::Commands::Create.send :include, I18nGenerator::Generator::Commands::Create
 

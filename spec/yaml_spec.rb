@@ -1,5 +1,5 @@
-require File.join(File.dirname(__FILE__), '/../generators/i18n/lib/yaml')
-include I18nGeneratorModule
+require File.join(File.dirname(__FILE__), '/../generators/i18n_locales/lib/yaml')
+include I18nLocalesGeneratorModule
 
 describe 'Yaml' do
   before do

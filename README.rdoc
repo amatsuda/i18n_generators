@@ -1,0 +1,65 @@
+= I18n generators
+
+This gem plugin generates a set of locale files for Rails 2.2 i18n feature.
+
+* http://github.com/amatsuda/i18n_generators/tree/master
+
+
+== FEATURES
+
+This gem/plugin provides following three script/generate commands.
+
+=== Generate Locale Files for ActiveRecord/ActiveSupport/ActionPack
+
+% ./script/generate i18n_locales ja-JP (de-AT, pt-BR, etc.)
+
+This will generate following locale files.
+
+    config/initializers/i18n_config.rb
+    lib/locale/action_view_ja-JP.yml
+    lib/locale/active_record_ja-JP.yml
+    lib/locale/active_support_ja-JP.yml
+
+Basically, all the generated .yml files in lib/locale directory are copied from en-US.yml files bundled inside Rails framework, and each attribute value is one-to-one translated into the specified locale(language).
+Also, the generated config file adds the .yml files to the I18n load_path, and sets the application default locale to the specified locale.
+
+=== Generate Models/Attributes Translation Yaml File For All Models
+
+% ./script/generate i18n_models ja-JP (de-AT, pt-BR, etc.)
+
+This will generate following YAML file.
+
+    lib/locale/models_ja-JP.yml
+
+This file contains definitions of all the AR model names and attributes in your app/models directory, so that you don't have to write the YAML skeleton manually or by copy/paste.
+Not only that, the generator tries to translate each of them into the specified language.
+The generator doesn't overwrite the existing value so that you can rerun the generator again and again just like Annotate Model plugin.
+
+
+== REQUIREMENTS:
+
+* Ruby on Rails (>= 2.2)
+* Ruby-GetText-Package ( http://rubyforge.org/projects/gettext/ )
+* high speed Internet connection
+
+
+== INSTALL:
+
+* As a gem
+
+% sudo gem install amatsuda-i18n_generators -s http://gems.github.com
+
+* As a Rails plugin
+
+% ./script/plugin install git://github.com/amatsuda/i18n_generators.git
+
+
+== CAUTION
+
+Current version of this plugin is very very very very roughly implemented just for experiment.
+Every time you execute the generate command, the plugin connects to the Unicode CLDR website and scrapes the huge amount of its contents.
+Please be careful not to harm your network environment and CLDR website by running this plugin too many times.
+
+
+Copyright (c) 2008  Akira Matsuda, released under the MIT license
+

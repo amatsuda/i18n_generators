@@ -14,7 +14,6 @@ module I18nModelsGeneratorModule
         result = ActiveSupport::JSON.decode(json)
         return @cache[word] = result['responseData']['translatedText'] if result['responseStatus'] == 200
       rescue => e
-        p e
         puts %Q[failed to translate "#{word}" into "#{@lang}" language.]
         word
       end

@@ -7,13 +7,15 @@ module I18nGenerator::Generator
   module Commands #:nodoc:
     module Create
       def models_yaml
-        models = Dir.chdir("#{RAILS_ROOT}/app/models/") do
-          Dir["**/*.rb"].map {|m| m.sub(/\.rb$/, '').capitalize.constantize}
-        end
         I18n.locale = locale_name
-        lang = locale_name.sub(/-.*$/, '')
-        models.each do |model|
-          model_name = model.class_name.underscore
+        models = model_filenames.map do |model_name|
+          model = begin
+            m = model_name.capitalize.constantize
+            next unless m.ancestors.include? ActiveRecord::Base
+            m
+          rescue
+            next
+          end
           registered_t_name = I18n.t("activerecord.models.#{model_name}", :default => model_name)
 
           model.class_eval <<-END
@@ -22,7 +24,7 @@ module I18nGenerator::Generator
   end
 
   def self.translated_name
-    "#{registered_t_name != model_name ? registered_t_name : Translator.translate(model_name, lang)}"
+    "#{registered_t_name != model_name ? registered_t_name : self.translator.translate(model_name)}"
   end
 END
           model.content_columns.each do |col|
@@ -30,15 +32,22 @@ END
             registered_t_name = I18n.t("activerecord.attributes.#{model_name}.#{col.name}", :default => col.name)
             col.class_eval <<-END
   def translated_name
-    "#{registered_t_name != col.name ? registered_t_name : Translator.translate(col.name, lang)}"
+    "#{registered_t_name != col.name ? registered_t_name : self.translator.translate(col.name)}"
   end
 END
           end
-        end
+          model
+        end.compact
         generate_yaml(locale_name, models)
       end
 
       private
+      def model_filenames
+        Dir.chdir("#{RAILS_ROOT}/app/models/") do
+          Dir["**/*.rb"].map {|m| m.sub(/\.rb$/, '')}
+        end
+      end
+
       def generate_yaml(locale_name, models)
         template 'i18n:models.yml', "lib/locale/models_#{locale_name}.yml", :assigns => {:locale_name => locale_name, :models => models}
       end

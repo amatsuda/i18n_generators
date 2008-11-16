@@ -4,7 +4,7 @@ require 'rubygems'
 require 'gettext'
 
 class I18nGenerator < Rails::Generator::NamedBase
-  attr_reader :locale_name, :cldr, :generate_models_only, :generate_locales_only
+  attr_reader :locale_name, :cldr, :translator, :generate_models_only, :generate_locales_only
 
   def initialize(runtime_args, runtime_options = {})
     super
@@ -16,7 +16,13 @@ class I18nGenerator < Rails::Generator::NamedBase
     GetText.bindtextdomain 'rails'
     GetText.locale = @locale_name
 
-    @cldr = CldrDocument.new @locale_name
+    unless self.generate_models_only
+      @cldr = CldrDocument.new @locale_name
+    end
+    unless self.generate_locales_only
+      lang = @locale_name.sub(/-.*$/, '')
+      @translator = Translator.new lang
+    end
   end
 
   def manifest

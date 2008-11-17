@@ -1,7 +1,7 @@
 Gem::Specification.new do |s|
   s.name     = 'i18n_generators'
-  s.version  = '0.0.6'
-  s.date     = '2008-11-16'
+  s.version  = '0.0.7'
+  s.date     = '2008-11-17'
   s.summary  = 'Generates I18n locale files for Rails 2.2'
   s.email    = 'ronnie@dio.jp'
   s.homepage = 'http://github.com/amatsuda/i18n_generators/'
@@ -10,7 +10,7 @@ Gem::Specification.new do |s|
   s.authors  = ['Akira Matsuda']
   s.files    = %w[
 MIT-LICENSE
-README
+README.rdoc
 Rakefile
 generators/i18n/USAGE
 generators/i18n/i18n_generator.rb

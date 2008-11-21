@@ -11,25 +11,25 @@ This gem/plugin provides following three script/generate commands.
 
 === 1. Generate Locale Files for ActiveRecord/ActiveSupport/ActionPack
 
-% ./script/generate i18n_locales ja-JP (de-AT, pt-BR, etc.)
+% ./script/generate i18n_locales ja (de-AT, pt-BR, etc.)
 
 This will generate following locale files.
 
     config/initializers/i18n_config.rb
-    lib/locale/action_view_ja-JP.yml
-    lib/locale/active_record_ja-JP.yml
-    lib/locale/active_support_ja-JP.yml
+    config/locale/action_view_ja.yml
+    config/locale/active_record_ja.yml
+    config/locale/active_support_ja.yml
 
-Basically, all the generated .yml files in lib/locale directory are copied from en-US.yml files bundled inside Rails framework, and each attribute value is one-to-one localized/translated into the specified locale/language.
+Basically, all the generated .yml files in config/locale directory are copied from en-US.yml files bundled inside Rails framework, and each attribute value is one-to-one localized/translated into the specified locale/language.
 Also, the generated config file adds the generated .yml files to the I18n load_path, and sets the application default locale to the specified locale.
 
 === 2. Generate Models/Attributes Translation Yaml File For All Models
 
-% ./script/generate i18n_models ja-JP (de-AT, pt-BR, etc.)
+% ./script/generate i18n_models ja (de-AT, pt-BR, etc.)
 
 This will generate following YAML file.
 
-    lib/locale/models_ja-JP.yml
+    config/locale/models_ja.yml
 
 This file contains definitions of all the AR model names and attributes in your app/models directory, so that you don't have to write the YAML skeleton manually or by copy/paste.
 In addition, the generator tries to translate each of them into the specified language.
@@ -37,9 +37,9 @@ The generator doesn't overwrite the existing value so that you can rerun the gen
 
 === 3. Generate All
 
-% ./script/generate i18n ja-JP (de-AT, pt-BR, etc.)
+% ./script/generate i18n ja (de-AT, pt-BR, etc.)
 
-Generates all the i18n_locales and i18N_models files at once.
+Generates all the i18n_locales and i18n_models files at once.
 
 == REQUIREMENTS:
 

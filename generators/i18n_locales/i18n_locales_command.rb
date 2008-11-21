@@ -1,6 +1,6 @@
+require 'rubygems'
 require 'rails_generator'
 require 'rails_generator/commands'
-require 'rubygems'
 require 'gettext'
 require File.join(File.dirname(__FILE__), 'lib/yaml')
 require File.join(File.dirname(__FILE__), 'lib/cldr')
@@ -9,6 +9,18 @@ include I18nLocalesGeneratorModule
 module I18nGenerator::Generator
   module Commands #:nodoc:
     module Create
+      def generate_configuration
+        if Rails.configuration.respond_to? :i18n  # Edge
+          # edit environment.rb file
+          environment = add_locale_config File.read(File.join(Rails.root, 'config/environment.rb'))
+          File.open File.join(Rails.root, 'config/environment.rb'), 'w' do |f|
+            f.puts environment
+          end
+        else
+          m.template 'i18n:i18n_config.rb', 'config/initializers/i18n_config.rb', :assigns => {:locale_name => locale_name}
+        end
+      end
+
       def active_support_yaml
         open_yaml('active_support') do |yaml|
           yaml[locale_name].descendant_nodes do |node|
@@ -62,11 +74,27 @@ module I18nGenerator::Generator
       end
 
       private
+      def add_locale_config(environment_contents)
+        (arr = environment_contents.split("\n")).each_with_index do |l, i|
+          if l =~ /^\s*config\.i18n\.default_locale = /
+            arr[i] = "  config.i18n.default_locale = '#{locale_name}'"
+            return arr.join("\n")
+          end
+        end
+        arr.each_with_index do |l, i|
+          if l =~ /^\s*#?\s*config\.i18n\.default_locale = /
+            arr[i] = "  config.i18n.default_locale = '#{locale_name}'"
+            return arr.join("\n")
+          end
+        end
+        (arr[0..-2] << "  config.i18n.default_locale = '#{locale_name}'" << arr[-1]).join("\n")
+      end
+
       def open_yaml(filename_base)
-        original_yml = I18n.load_path.detect {|lp| lp =~ /\/lib\/#{filename_base}\/locale\/en-US\.yml$/}
+        original_yml = I18n.load_path.detect {|lp| lp =~ /\/lib\/#{filename_base}\/locale\/(en|en-US)\.yml$/}
         doc = YamlDocument.new(original_yml, locale_name)
         yield doc
-        file('i18n:base.yml', "lib/locale/#{filename_base}_#{locale_name}.yml") do |f|
+        file('i18n:base.yml', "config/locales/#{filename_base}_#{locale_name}.yml") do |f|
           doc.to_s
         end
       end

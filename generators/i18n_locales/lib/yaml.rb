@@ -6,7 +6,7 @@ module I18nLocalesGeneratorModule
       @locale_name, @nodes = locale_name, []
       File.read(yml_path).each_with_index do |line_text, i|
         n = Node.new(self, i, line_text.chomp)
-        @nodes << (n.key == 'en-US' ? Node.new(self, i, "#{locale_name}:") : n)
+        @nodes << (((n.key == 'en-US') || (n.key == 'en')) ? Node.new(self, i, "#{locale_name}:") : n)
       end
     end
 

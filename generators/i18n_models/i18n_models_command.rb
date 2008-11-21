@@ -49,7 +49,7 @@ END
       end
 
       def generate_yaml(locale_name, models)
-        template 'i18n:models.yml', "lib/locale/models_#{locale_name}.yml", :assigns => {:locale_name => locale_name, :models => models}
+        template 'i18n:models.yml', "config/locales/models_#{locale_name}.yml", :assigns => {:locale_name => locale_name, :models => models}
       end
     end
   end

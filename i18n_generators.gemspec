@@ -1,7 +1,7 @@
 Gem::Specification.new do |s|
   s.name     = 'i18n_generators'
-  s.version  = '0.0.7'
-  s.date     = '2008-11-17'
+  s.version  = '0.0.8'
+  s.date     = '2008-11-21'
   s.summary  = 'Generates I18n locale files for Rails 2.2'
   s.email    = 'ronnie@dio.jp'
   s.homepage = 'http://github.com/amatsuda/i18n_generators/'

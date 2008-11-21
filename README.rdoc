@@ -16,9 +16,9 @@ This gem/plugin provides following three script/generate commands.
 This will generate following locale files.
 
     config/initializers/i18n_config.rb
-    config/locale/action_view_ja.yml
-    config/locale/active_record_ja.yml
-    config/locale/active_support_ja.yml
+    config/locales/action_view_ja.yml
+    config/locales/active_record_ja.yml
+    config/locales/active_support_ja.yml
 
 Basically, all the generated .yml files in config/locale directory are copied from en-US.yml files bundled inside Rails framework, and each attribute value is one-to-one localized/translated into the specified locale/language.
 Also, the generated config file adds the generated .yml files to the I18n load_path, and sets the application default locale to the specified locale.
@@ -29,7 +29,7 @@ Also, the generated config file adds the generated .yml files to the I18n load_p
 
 This will generate following YAML file.
 
-    config/locale/models_ja.yml
+    config/locales/models_ja.yml
 
 This file contains definitions of all the AR model names and attributes in your app/models directory, so that you don't have to write the YAML skeleton manually or by copy/paste.
 In addition, the generator tries to translate each of them into the specified language.

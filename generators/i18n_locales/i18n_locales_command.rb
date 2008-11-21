@@ -87,7 +87,9 @@ module I18nGenerator::Generator
             return arr.join("\n")
           end
         end
-        (arr[0..-2] << "  config.i18n.default_locale = '#{locale_name}'" << arr[-1]).join("\n")
+        # hope you're all using Ruby >= 1.8.7...
+        end_row = arr.respond_to?(:rindex) ? arr.rindex {|l| l =~ /^\s*end\s*/} : arr.size - 1
+        ((arr[0...end_row] << "  config.i18n.default_locale = '#{locale_name}'") + arr[end_row..-1]).join("\n")
       end
 
       def open_yaml(filename_base)

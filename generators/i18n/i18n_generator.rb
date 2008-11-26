@@ -30,13 +30,26 @@ class I18nGenerator < Rails::Generator::NamedBase
       m.directory 'config/locales'
       unless self.generate_models_only
         m.generate_configuration
-        m.active_support_yaml
-        m.active_record_yaml
-        m.action_view_yaml
+        if defined_in_rails_i18n_repository?
+          m.fetch_from_rails_i18n_repository
+        else
+          m.active_support_yaml
+          m.active_record_yaml
+          m.action_view_yaml
+        end
       end
       unless self.generate_locales_only
         m.models_yaml
       end
+    end
+  end
+
+  private
+  def defined_in_rails_i18n_repository?
+    begin
+      OpenURI.open_uri("http://github.com/svenfuchs/rails-i18n/tree/master/rails/locale/#{locale_name}.yml").status == %w[200 OK]
+    rescue
+      false
     end
   end
 end

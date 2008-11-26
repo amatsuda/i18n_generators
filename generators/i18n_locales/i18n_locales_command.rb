@@ -10,14 +10,22 @@ module I18nGenerator::Generator
   module Commands #:nodoc:
     module Create
       def generate_configuration
-        if Rails.configuration.respond_to? :i18n  # Edge
+        return if I18n.default_locale == locale_name
+        if Rails.configuration.respond_to? :i18n  # >= 2.2.2
           # edit environment.rb file
           environment = add_locale_config File.read(File.join(Rails.root, 'config/environment.rb'))
           File.open File.join(Rails.root, 'config/environment.rb'), 'w' do |f|
             f.puts environment
           end
+          puts "      update  config/environment.rb"
         else
-          m.template 'i18n:i18n_config.rb', 'config/initializers/i18n_config.rb', :assigns => {:locale_name => locale_name}
+          template 'i18n:i18n_config.rb', 'config/initializers/i18n_config.rb', :assigns => {:locale_name => locale_name}
+        end
+      end
+
+      def fetch_from_rails_i18n_repository
+        file('i18n:base.yml', "config/locales/#{locale_name}.yml") do |f|
+          OpenURI.open_uri("http://github.com/svenfuchs/rails-i18n/tree/master/rails/locale/#{locale_name}.yml?raw=true").read
         end
       end
 

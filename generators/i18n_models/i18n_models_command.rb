@@ -10,7 +10,7 @@ module I18nGenerator::Generator
         I18n.locale = locale_name
         models = model_filenames.map do |model_name|
           model = begin
-            m = model_name.capitalize.constantize
+            m = model_name.camelize.constantize
             next unless m.ancestors.include? ActiveRecord::Base
             m
           rescue

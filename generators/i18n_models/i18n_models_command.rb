@@ -11,7 +11,7 @@ module I18nGenerator::Generator
         models = model_filenames.map do |model_name|
           model = begin
             m = model_name.camelize.constantize
-            next unless m.ancestors.include? ActiveRecord::Base
+            next unless m.respond_to?(:content_columns)
             m
           rescue
             next

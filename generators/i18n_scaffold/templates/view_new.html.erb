@@ -1,0 +1,17 @@
+<h1><%%= translate(:new, :default => "New {{model}}", :model => <%= class_name %>.human_name, :scope => [:railties, :scaffold]) %></h1>
+
+<%% form_for(@<%= singular_name %>) do |f| %>
+  <%%= f.error_messages %>
+
+<% for attribute in attributes -%>
+  <p>
+    <%%= f.label :<%= attribute.name %> %><br />
+    <%%= f.<%= attribute.field_type %> :<%= attribute.name %> %>
+  </p>
+<% end -%>
+  <p>
+    <%%= f.submit translate(:create, :default => "Create", :scope => [:railties, :scaffold]) %>
+  </p>
+<%% end %>
+
+<%%= link_to translate(:back, :default => 'Back', :scope => [:railties, :scaffold]), <%= plural_name %>_path %>

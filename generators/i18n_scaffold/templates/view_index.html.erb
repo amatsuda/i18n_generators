@@ -1,0 +1,24 @@
+<h1><%%= translate(:listing, :default => "Listing {{model}}", :model => <%= class_name %>.human_name(:count => @<%= plural_name %>.size), :count => @<%= plural_name %>.size, :scope => [:railties, :scaffold]) %></h1>
+
+<table>
+  <tr>
+<% for attribute in attributes -%>
+    <th><%%= <%= class_name %>.human_attribute_name('<%= attribute.column.name %>') %></th>
+<% end -%>
+  </tr>
+
+<%% for <%= singular_name %> in @<%= plural_name %> %>
+  <tr>
+<% for attribute in attributes -%>
+    <td><%%=h <%= singular_name %>.<%= attribute.name %> %></td>
+<% end -%>
+    <td><%%= link_to translate(:show, :default => 'Show', :scope => [:railties, :scaffold]), <%= singular_name %> %></td>
+    <td><%%= link_to translate(:edit, :default => 'Edit', :scope => [:railties, :scaffold]), edit_<%= singular_name %>_path(<%= singular_name %>) %></td>
+    <td><%%= link_to translate(:destroy, :default => 'Destroy', :scope => [:railties, :scaffold]), <%= singular_name %>, :confirm => translate(:confirmation, :default => 'Are you sure?', :scope => [:railties, :scaffold]), :method => :delete %></td>
+  </tr>
+<%% end %>
+</table>
+
+<br />
+
+<%%= link_to translate(:new, :default => "New {{model}}", :model => <%= class_name %>.human_name, :scope => [:railties, :scaffold]), new_<%= singular_name %>_path %>

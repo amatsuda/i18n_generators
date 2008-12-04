@@ -7,6 +7,12 @@ class I18nGenerator < Rails::Generator::NamedBase
   attr_reader :locale_name, :cldr, :translator, :generate_models_only, :generate_locales_only
 
   def initialize(runtime_args, runtime_options = {})
+    if options[:scaffold]
+      #TODO invoke scaffold generator
+      puts 'please use generate i18n_scaffold command'
+      exit
+    end
+
     super
     unless name =~ /^[a-zA-Z]{2}([-_][a-zA-Z]{2})?$/
       puts 'ERROR: Wrong locale format. Please input in ?? or ??-?? format.'
@@ -16,10 +22,10 @@ class I18nGenerator < Rails::Generator::NamedBase
     GetText.bindtextdomain 'rails'
     GetText.locale = @locale_name
 
-    unless self.generate_models_only
+    unless options[:generate_models_only]
       @cldr = CldrDocument.new @locale_name
     end
-    unless self.generate_locales_only
+    unless options[:generate_locales_only]
       lang = @locale_name.sub(/-.*$/, '')
       @translator = Translator.new lang
     end
@@ -28,7 +34,7 @@ class I18nGenerator < Rails::Generator::NamedBase
   def manifest
     record do |m|
       m.directory 'config/locales'
-      unless self.generate_models_only
+      unless options[:generate_models_only]
         m.generate_configuration
         if defined_in_rails_i18n_repository?
           m.fetch_from_rails_i18n_repository
@@ -38,10 +44,22 @@ class I18nGenerator < Rails::Generator::NamedBase
           m.action_view_yaml
         end
       end
-      unless self.generate_locales_only
+      unless options[:generate_locales_only]
         m.models_yaml
       end
     end
+  end
+
+  protected
+  def add_options!(opt)
+    opt.separator ''
+    opt.separator 'Options:'
+    opt.on('--model',
+           'Generate translations for all models and their attributes') {|v| options[:generate_models_only] = v}
+    opt.on('--locale',
+           'Generate locale files') {|v| options[:generate_locales_only] = v}
+    opt.on('--scaffold',
+           'Generate I18n scaffold') {|v| options[:scaffold] = v}
   end
 
   private

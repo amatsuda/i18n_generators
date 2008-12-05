@@ -38,7 +38,43 @@ END
           end
           model
         end.compact
-        generate_yaml(locale_name, models)
+        # pick all translated keywords from view files
+        def I18n.translate(key, options = {})
+          Thread.current[:translation_keys] << key.to_sym
+        end
+        #TODO alias?
+        def I18n.t(key, options = {})
+          p key
+          Thread.current[:translation_keys] << key.to_sym
+        end
+        Object.class_eval do
+          define_method(:translate) do |*args|
+            'Thread.current[:translation_keys] << args[0].to_sym'
+          end
+          define_method(:t) do |*args|
+            'Thread.current[:translation_keys] << args[0].to_sym'
+          end
+          define_method(:method_missing) do |*args|
+            nil
+          end
+        end
+        def nil.method_missing(method, *args, &block)
+          nil
+        end
+
+        Thread.current[:translation_keys] = []
+        Dir["#{RAILS_ROOT}/app/views/**/*.erb"].each do |f|
+          begin
+#             ERB.new(File.read(f)).result
+            exec_erb f
+          rescue
+            # do nothing
+          end
+        end
+        keys_in_view = Thread.current[:translation_keys].uniq!
+        keys_in_view -= models.map {|m| m.english_name.to_sym}
+        keys_in_view -= models.inject([]) {|a, m| a + m.content_columns.map {|c| "#{m.english_name}.#{c.name}".to_sym}}
+        generate_yaml(locale_name, models, keys_in_view.inject({}) {|h, k| h[k] = translator.translate(k); h})
       end
 
       private
@@ -48,8 +84,19 @@ END
         end
       end
 
-      def generate_yaml(locale_name, models)
-        template 'i18n:models.yml', "config/locales/models_#{locale_name}.yml", :assigns => {:locale_name => locale_name, :models => models}
+      def exec_erb(filename)
+        (m = Module.new).module_eval <<-EOS
+          class ERBExecuter
+            extend ERB::DefMethod
+            def_erb_method 'execute', '#{filename}'
+        end
+        EOS
+        executer = m.const_get 'ERBExecuter'
+        executer.new.execute { }
+      end
+
+      def generate_yaml(locale_name, models, translations)
+        template 'i18n:models.yml', "config/locales/models_#{locale_name}.yml", :assigns => {:locale_name => locale_name, :models => models, :translations => translations}
       end
     end
   end

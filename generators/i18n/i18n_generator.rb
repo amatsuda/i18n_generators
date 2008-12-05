@@ -58,8 +58,6 @@ class I18nGenerator < Rails::Generator::NamedBase
            'Generate translations for all models and their attributes') {|v| options[:generate_models_only] = v}
     opt.on('--locale',
            'Generate locale files') {|v| options[:generate_locales_only] = v}
-    opt.on('--scaffold',
-           'Generate I18n scaffold') {|v| options[:scaffold] = v}
   end
 
   private

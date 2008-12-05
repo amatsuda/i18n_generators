@@ -13,4 +13,7 @@
 <%     end -%>
 <%   end -%>
 <% end -%>
+<% translations.each do |key, value| -%>
+  <%= "#{key}: #{value}" %>
+<% end -%>
 

@@ -1,7 +1,7 @@
 $KCODE = 'U'
 
-require File.join(File.dirname(__FILE__), '../generators/i18n_locales/lib/cldr')
-include I18nLocalesGeneratorModule
+require File.join(File.dirname(__FILE__), '../generators/i18n_locale/lib/cldr')
+include I18nLocaleGeneratorModule
 
 describe CldrDocument do
   before do

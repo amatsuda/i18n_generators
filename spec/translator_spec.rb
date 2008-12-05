@@ -1,7 +1,7 @@
 $KCODE = 'U'
 
-require File.join(File.dirname(__FILE__), '../generators/i18n_models/lib/translator')
-include I18nModelsGeneratorModule
+require File.join(File.dirname(__FILE__), '../generators/i18n_translation/lib/translator')
+include I18nTranslationGeneratorModule
 
 describe Translator do
   before(:each) do

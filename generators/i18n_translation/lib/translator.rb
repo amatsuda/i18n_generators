@@ -1,6 +1,6 @@
 require 'open-uri'
 
-module I18nModelsGeneratorModule
+module I18nTranslationGeneratorModule
   class Translator
     def initialize(lang)
       @lang, @cache = lang, {}

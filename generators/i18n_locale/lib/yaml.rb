@@ -1,6 +1,6 @@
 require 'yaml'
 
-module I18nLocalesGeneratorModule
+module I18nLocaleGeneratorModule
   class YamlDocument
     def initialize(yml_path, locale_name)
       @locale_name, @nodes = locale_name, []

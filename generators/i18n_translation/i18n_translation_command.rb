@@ -1,12 +1,12 @@
 require 'rails_generator'
 require 'rails_generator/commands'
 require File.join(File.dirname(__FILE__), 'lib/translator')
-include I18nModelsGeneratorModule
+include I18nTranslationGeneratorModule
 
 module I18nGenerator::Generator
   module Commands #:nodoc:
     module Create
-      def models_yaml
+      def translation_yaml
         I18n.locale = locale_name
         models = model_filenames.map do |model_name|
           model = begin
@@ -44,7 +44,6 @@ END
         end
         #TODO alias?
         def I18n.t(key, options = {})
-          p key
           Thread.current[:translation_keys] << key.to_sym
         end
         Object.class_eval do
@@ -91,12 +90,11 @@ END
             def_erb_method 'execute', '#{filename}'
         end
         EOS
-        executer = m.const_get 'ERBExecuter'
-        executer.new.execute { }
+        m.const_get('ERBExecuter').new.execute { }
       end
 
       def generate_yaml(locale_name, models, translations)
-        template 'i18n:models.yml', "config/locales/models_#{locale_name}.yml", :assigns => {:locale_name => locale_name, :models => models, :translations => translations}
+        template 'i18n:translation.yml', "config/locales/translation_#{locale_name}.yml", :assigns => {:locale_name => locale_name, :models => models, :translations => translations}
       end
     end
   end

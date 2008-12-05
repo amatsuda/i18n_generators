@@ -1,4 +1,4 @@
-require File.join(File.dirname(__FILE__), '/../generators/i18n_locales/i18n_locales_command')
+require File.join(File.dirname(__FILE__), '/../generators/i18n_locale/i18n_locale_command')
 
 describe I18nGenerator::Generator::Commands::Create do
   before do

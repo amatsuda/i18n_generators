@@ -2,7 +2,7 @@ $KCODE = 'U'
 
 require 'open-uri'
 
-module I18nLocalesGeneratorModule
+module I18nLocaleGeneratorModule
   class CldrDocument
     def initialize(locale_name)
       @locale_name = locale_name

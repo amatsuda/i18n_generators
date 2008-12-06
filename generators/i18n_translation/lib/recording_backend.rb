@@ -7,7 +7,6 @@ module I18nTranslationGeneratorModule
     end
 
     def translate(locale, key, options = {})
-      p key.to_sym
       @keys << key.to_sym
     end
     alias :t :translate

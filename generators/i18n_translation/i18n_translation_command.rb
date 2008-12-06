@@ -1,6 +1,7 @@
 require 'rails_generator'
 require 'rails_generator/commands'
 require File.join(File.dirname(__FILE__), 'lib/translator')
+require File.join(File.dirname(__FILE__), 'lib/erb_executer')
 include I18nTranslationGeneratorModule
 
 module I18nGenerator::Generator
@@ -39,38 +40,12 @@ END
           model
         end.compact
         # pick all translated keywords from view files
-        def I18n.translate(key, options = {})
-          Thread.current[:translation_keys] << key.to_sym
-        end
-        #TODO alias?
-        def I18n.t(key, options = {})
-          Thread.current[:translation_keys] << key.to_sym
-        end
-        Object.class_eval do
-          define_method(:translate) do |*args|
-            'Thread.current[:translation_keys] << args[0].to_sym'
-          end
-          define_method(:t) do |*args|
-            'Thread.current[:translation_keys] << args[0].to_sym'
-          end
-          define_method(:method_missing) do |*args|
-            nil
-          end
-        end
-        def nil.method_missing(method, *args, &block)
-          nil
-        end
+        I18n.backend = RecordingBackend.new
 
-        Thread.current[:translation_keys] = []
         Dir["#{RAILS_ROOT}/app/views/**/*.erb"].each do |f|
-          begin
-#             ERB.new(File.read(f)).result
-            exec_erb f
-          rescue
-            # do nothing
-          end
+          ErbExecuter.new.exec_erb f
         end
-        keys_in_view = Thread.current[:translation_keys].uniq!
+        keys_in_view = I18n.backend.keys
         keys_in_view -= models.map {|m| m.english_name.to_sym}
         keys_in_view -= models.inject([]) {|a, m| a + m.content_columns.map {|c| "#{m.english_name}.#{c.name}".to_sym}}
         generate_yaml(locale_name, models, keys_in_view.inject({}) {|h, k| h[k] = translator.translate(k); h})
@@ -81,16 +56,6 @@ END
         Dir.chdir("#{RAILS_ROOT}/app/models/") do
           Dir["**/*.rb"].map {|m| m.sub(/\.rb$/, '')}
         end
-      end
-
-      def exec_erb(filename)
-        (m = Module.new).module_eval <<-EOS
-          class ERBExecuter
-            extend ERB::DefMethod
-            def_erb_method 'execute', '#{filename}'
-        end
-        EOS
-        m.const_get('ERBExecuter').new.execute { }
       end
 
       def generate_yaml(locale_name, models, translations)

@@ -1,4 +1,4 @@
-require 'through_ryoku'
+require "#{File.dirname(__FILE__)}/through_ryoku"
 
 module I18nTranslationGeneratorModule
   class ErbExecuter

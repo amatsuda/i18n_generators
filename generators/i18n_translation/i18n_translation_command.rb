@@ -1,6 +1,7 @@
 require 'rails_generator'
 require 'rails_generator/commands'
 require File.join(File.dirname(__FILE__), 'lib/translator')
+require File.join(File.dirname(__FILE__), 'lib/recording_backend')
 require File.join(File.dirname(__FILE__), 'lib/erb_executer')
 include I18nTranslationGeneratorModule
 

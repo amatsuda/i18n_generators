@@ -55,9 +55,9 @@ class I18nGenerator < Rails::Generator::NamedBase
     opt.separator ''
     opt.separator 'Options:'
     opt.on('--translation',
-           'Generate translations for all models and their attributes') {|v| options[:generate_translation_only] = v}
+           'Generate translations for all models with their attributes and all translation keys in the view files.') {|v| options[:generate_translation_only] = v}
     opt.on('--locale',
-           'Generate locale files') {|v| options[:generate_locale_only] = v}
+           'Generate locale files.') {|v| options[:generate_locale_only] = v}
   end
 
   private

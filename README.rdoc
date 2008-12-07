@@ -7,39 +7,65 @@ This gem plugin generates a set of locale files for Rails 2.2 i18n feature.
 
 == FEATURES
 
-This gem/plugin provides following three script/generate commands.
+This gem/plugin provides following four script/generate commands.
 
-=== 1. Generate Locale Files for ActiveRecord/ActiveSupport/ActionPack
+=== 1. Generate I18n Scaffold
 
-% ./script/generate i18n_locales ja (de-AT, pt-BR, etc.)
+% ./script/generate i18n_scaffold ja (de-AT, pt-BR, etc.)
 
-This will generate following locale files.
+Generates I18n aware scaffold.
 
-    config/initializers/i18n_config.rb
-    config/locales/action_view_ja.yml
-    config/locales/active_record_ja.yml
-    config/locales/active_support_ja.yml
+=== 2. Generate Locale Files for ActiveRecord/ActiveSupport/ActionPack
 
-Basically, all the generated .yml files in config/locale directory are copied from en-US.yml files bundled inside Rails framework, and each attribute value is one-to-one localized/translated into the specified locale/language.
-Also, the generated config file adds the generated .yml files to the I18n load_path, and sets the application default locale to the specified locale.
+% ./script/generate i18n_locale ja (de-AT, pt-BR, etc.)
 
-=== 2. Generate Models/Attributes Translation Yaml File For All Models
+or
 
-% ./script/generate i18n_models ja (de-AT, pt-BR, etc.)
+% ./script/generate i18n --locale ja (de-AT, pt-BR, etc.)
+
+* A. If The Locale File Exists In Rails-I18n Repository
+
+Firstly, the generator checks here.
+http://github.com/svenfuchs/rails-i18n/tree/master/rails/locale
+If the spacified .yml file exists in the repository, the generator downloads and puts the file into your config/locales directory.
+Then the generater sets the application default locale to the specified locale.
+
+This will generate following locale file.
+
+    config/locales/ja.yml
+
+* B. Else
+
+The generator copies the en.yml file (bundled inside Rails framework) into config/locales directory, and one-to-one localizes/translates each attribute value into the specified locale/language.
+Then the generater sets the application default locale to the specified locale.
+
+This will generate following locale file.
+
+    config/locales/ja.yml
+
+=== 3. Generate Translation YAML File For All Models/Attributes and views/**/*.erb
+
+% ./script/generate i18n_translation ja (de-AT, pt-BR, etc.)
+
+or
+
+% ./script/generate i18n --translation ja (de-AT, pt-BR, etc.)
 
 This will generate following YAML file.
 
-    config/locales/models_ja.yml
+    config/locales/translation_ja.yml
 
-This file contains definitions of all the AR model names and attributes in your app/models directory, so that you don't have to write the YAML skeleton manually or by copy/paste.
+The generator scans your app/models directory, and generates a YAML file with all the AR model names and attributes so that you don't have to write the YAML skeleton manually or by copy/paste.
+In addition, the generator scans all the *.erb files in your app/views/** directory, and picks all the keys for I18n.translate, then adds them to the YAML file.
 In addition, the generator tries to translate each of them into the specified language.
 The generator doesn't overwrite the existing value so that you can rerun the generator again and again just like Annotate Model plugin.
 
-=== 3. Generate All
+=== 4. Generate All
 
 % ./script/generate i18n ja (de-AT, pt-BR, etc.)
 
-Generates all the i18n_locales and i18n_models files at once.
+Executes 2 and 3 at once.
+
 
 == REQUIREMENTS:
 

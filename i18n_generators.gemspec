@@ -1,7 +1,7 @@
 Gem::Specification.new do |s|
   s.name     = 'i18n_generators'
-  s.version  = '0.3.1'
-  s.date     = '2008-12-08'
+  s.version  = '0.3.2'
+  s.date     = '2008-12-15'
   s.summary  = 'Generates I18n locale files for Rails 2.2'
   s.email    = 'ronnie@dio.jp'
   s.homepage = 'http://github.com/amatsuda/i18n_generators/'
@@ -44,6 +44,7 @@ spec/cldr_spec.rb
 spec/data/cldr/ja.html
 spec/data/yml/active_record/en-US.yml
 spec/i18n_locale_command_spec.rb
+spec/i18n_translation_command_spec.rb
 spec/translator_spec.rb
 spec/yaml_spec.rb]
   s.rubygems_version = '1.3.1'

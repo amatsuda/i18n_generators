@@ -100,7 +100,12 @@ module I18nLocaleGeneratorModule
         OpenURI.open_uri("http://www.unicode.org/cldr/data/charts/summary/#{locale_name}.html").read
       rescue
         puts "WARNING: Couldn't find locale data for #{locale_name} on the web."
-        ''
+        if locale_name =~ /^[a-zA-Z]{2}[-_][a-zA-Z]{2}$/
+          puts "WARNING: Trying to use #{locale_name.to(1)} instead."
+          load_cldr_data locale_name.to(1)
+        else
+          ''
+        end
       end
       cldr.split("\n").grep(/^<tr>/).delete_if {|r| r =~ /^<tr><td>\d*<\/td><td class='[gn]'>names<\/td>/}
     end

@@ -95,8 +95,13 @@ module I18nGenerator::Generator
             return arr.join("\n")
           end
         end
-        # hope you're all using Ruby >= 1.8.7...
-        end_row = arr.respond_to?(:rindex) ? arr.rindex {|l| l =~ /^\s*end\s*/} : arr.size - 1
+        arr.each_with_index do |l, i|
+          if l =~ /Rails::Initializer\.run do \|config\|/
+            arr[i] = "Rails::Initializer.run do |config|\n  config.i18n.default_locale = '#{locale_name}'"
+            return arr.join("\n")
+          end
+        end
+        end_row = RUBY_VERSION >= '1.8.7' ? arr.rindex {|l| l =~ /^\s*end\s*/} : arr.size - 1
         ((arr[0...end_row] << "  config.i18n.default_locale = '#{locale_name}'") + arr[end_row..-1]).join("\n")
       end
 

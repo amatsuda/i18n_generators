@@ -69,12 +69,11 @@ module I18nGenerator::Generator
           threads = []
           keys.each do |key|
             threads << Thread.new do
-              logger.debug "translating #{key}..."
+              logger.debug "translating #{key} ..."
               Thread.pass
               if key.to_s.include? '.'
                 key_prefix, key_suffix = key.to_s.split('.')[0...-1], key.to_s.split('.')[-1]
                 existing_translation = I18n.t(key, :default => key_suffix, :locale => locale_name)
-                p existing_translation
                 key_prefix.inject(oh) {|h, k| h[k]}[key_suffix] = existing_translation != key_suffix ? existing_translation : translator.translate(key_suffix)
               else
                 existing_translation = I18n.t(key, :default => key, :locale => locale_name)

@@ -39,7 +39,7 @@ module I18nGenerator::Generator
         # translate all keys and generate the YAML file
         now = Time.now
         translations = translate_all(translation_keys)
-        logger.debug "took #{Time.now - now} secs to translate #{translations.count} words."
+        logger.debug "took #{Time.now - now} secs to translate."
         generate_yaml(locale_name, translations)
       end
 

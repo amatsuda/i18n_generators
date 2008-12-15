@@ -109,7 +109,7 @@ module I18nGenerator::Generator
         original_yml = I18n.load_path.detect {|lp| lp =~ /\/lib\/#{filename_base}\/locale\/(en|en-US)\.yml$/}
         doc = YamlDocument.new(original_yml, locale_name)
         yield doc
-        file('i18n:base.yml', "config/locale/#{filename_base}_#{locale_name}.yml") do |f|
+        file('i18n:base.yml', "config/locales/#{filename_base}_#{locale_name}.yml") do |f|
           doc.to_s
         end
       end

@@ -9,10 +9,12 @@ module I18nTranslationGeneratorModule
           class Executer
             extend ERB::DefMethod
             include ActionView::Helpers::TranslationHelper
-            include ThroughRyoku
+            include I18nTranslationGeneratorModule::ThroughRyoku
+
             nil.class_eval do
               def method_missing(method, *args, &block); nil; end
             end
+
             def_erb_method 'execute', '#{filename}'
           end
         EOS

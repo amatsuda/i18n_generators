@@ -10,56 +10,37 @@ module I18nGenerator::Generator
     module Create
       def translation_yaml
         I18n.locale = locale_name
-        threads = []
-        now = Time.now
         models = model_filenames.map do |model_name|
           model = begin
             m = model_name.camelize.constantize
             next unless m.respond_to?(:content_columns)
+            m.class_eval %Q[def self.english_name; "#{model_name}"; end]
             m
           rescue
             next
           end
-          threads << Thread.new do
-            Thread.pass
-            registered_t_name = I18n.t("activerecord.models.#{model_name}", :default => model_name, :locale => locale_name)
-
-            model.class_eval <<-END
-    def self.english_name
-      "#{model_name}"
-    end
-
-    def self.translated_name
-      "#{registered_t_name != model_name ? registered_t_name : self.translator.translate(model_name)}"
-    end
-  END
-            model.content_columns.each do |col|
-              next if %w[created_at updated_at].include? col.name
-              registered_t_name = I18n.t("activerecord.attributes.#{model_name}.#{col.name}", :default => col.name, :locale => locale_name)
-              col.class_eval <<-END
-    def translated_name
-      "#{registered_t_name != col.name ? registered_t_name : self.translator.translate(col.name)}"
-    end
-  END
-            end
-          end
-          model
         end.compact
-        threads.each {|t| t.join}
-        logger.debug "took #{Time.now - now} secs to translate #{models.count} models."
+        translation_keys = []
+        translation_keys += models.map {|m| "activerecord.models.#{m.english_name}"}
+        models.each do |model|
+          translation_keys += model.content_columns.map {|c| "activerecord.attributes.#{model.english_name}.#{c.name}"}
+        end
+
         # pick all translated keywords from view files
+        original_backend = I18n.backend
         I18n.backend = RecordingBackend.new
 
         Dir["#{RAILS_ROOT}/app/views/**/*.erb"].each do |f|
           ErbExecuter.new.exec_erb f
         end
-        keys_in_view = I18n.backend.keys
-        keys_in_view -= models.map {|m| m.english_name.to_sym}
-        keys_in_view -= models.inject([]) {|a, m| a + m.content_columns.map {|c| "#{m.english_name}.#{c.name}".to_sym}}
+        (translation_keys += I18n.backend.keys).uniq!
+        I18n.backend = original_backend
+
+        # translate all keys and generate the YAML file
         now = Time.now
-        translated_hash = translate_all keys_in_view
-        logger.debug "took #{Time.now - now} secs to translate #{keys_in_view.count} words."
-        generate_yaml(locale_name, models, translated_hash)
+        translations = translate_all(translation_keys)
+        logger.debug "took #{Time.now - now} secs to translate #{translations.count} words."
+        generate_yaml(locale_name, translations)
       end
 
       private
@@ -69,22 +50,53 @@ module I18nGenerator::Generator
         end
       end
 
-      def generate_yaml(locale_name, models, translations)
-        template 'i18n:translation.yml', "config/locales/translation_#{locale_name}.yml", :assigns => {:locale_name => locale_name, :models => models, :translations => translations}
+      def generate_yaml(locale_name, translations)
+        template 'i18n:translation.yml', "config/locales/translation_#{locale_name}.yml", :assigns => {:locale_name => locale_name, :translations => translations}
       end
 
       # receives an array of keys and returns :key => :translation hash
       def translate_all(keys)
-        threads = []
-        ret = keys.inject({}) do |hash, key|
-          threads << Thread.new do
-            Thread.pass
-            hash[key] = translator.translate key
+        returning ActiveSupport::OrderedHash.new do |oh|
+          # fix the order first(for multi thread translating)
+          keys.each do |key|
+            if key.to_s.include? '.'
+              key_prefix, key_suffix = key.to_s.split('.')[0...-1], key.to_s.split('.')[-1]
+              key_prefix.inject(oh) {|h, k| h[k] ||= ActiveSupport::OrderedHash.new}[key_suffix] = nil
+            else
+              oh[key] = nil
+            end
           end
-          hash
+          threads = []
+          keys.each do |key|
+            threads << Thread.new do
+              logger.debug "translating #{key}..."
+              Thread.pass
+              if key.to_s.include? '.'
+                key_prefix, key_suffix = key.to_s.split('.')[0...-1], key.to_s.split('.')[-1]
+                existing_translation = I18n.t(key, :default => key_suffix, :locale => locale_name)
+                p existing_translation
+                key_prefix.inject(oh) {|h, k| h[k]}[key_suffix] = existing_translation != key_suffix ? existing_translation : translator.translate(key_suffix)
+              else
+                existing_translation = I18n.t(key, :default => key, :locale => locale_name)
+                oh[key] = existing_translation != key ? existing_translation : translator.translate(key)
+              end
+            end
+          end
+          threads.each {|t| t.join}
         end
-        threads.each {|t| t.join}
-        ret
+      end
+
+      def yamlize(hash, nest_level)
+        returning '' do |s|
+          hash.each do |k, v|
+            if v.is_a?(ActiveSupport::OrderedHash)
+              s << "#{'  ' * nest_level}#{k}:\n"
+              s << yamlize(v, nest_level + 1)
+            else
+              s << "#{'  ' * nest_level}#{k}: #{v}\n"
+            end
+          end
+        end
       end
     end
   end

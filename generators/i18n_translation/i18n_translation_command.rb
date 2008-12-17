@@ -3,6 +3,7 @@ require 'rails_generator/commands'
 require File.join(File.dirname(__FILE__), 'lib/translator')
 require File.join(File.dirname(__FILE__), 'lib/recording_backend')
 require File.join(File.dirname(__FILE__), 'lib/erb_executer')
+require File.join(File.dirname(__FILE__), '../i18n/lib/yaml')
 include I18nTranslationGeneratorModule
 
 module I18nGenerator::Generator
@@ -25,6 +26,7 @@ module I18nGenerator::Generator
         models.each do |model|
           translation_keys += model.content_columns.map {|c| "activerecord.attributes.#{model.english_name}.#{c.name}"}
         end
+        logger.debug "#{models.size} models found."
 
         # pick all translated keywords from view files
         original_backend = I18n.backend
@@ -33,6 +35,7 @@ module I18nGenerator::Generator
         Dir["#{RAILS_ROOT}/app/views/**/*.erb"].each do |f|
           ErbExecuter.new.exec_erb f
         end
+        logger.debug "#{I18n.backend.keys.size} translation keys found in views."
         (translation_keys += I18n.backend.keys).uniq!
         I18n.backend = original_backend
 
@@ -40,7 +43,9 @@ module I18nGenerator::Generator
         now = Time.now
         translations = translate_all(translation_keys)
         logger.debug "took #{Time.now - now} secs to translate."
-        generate_yaml(locale_name, translations)
+
+        yaml = generate_yaml(locale_name, translations)
+        template 'i18n:translation.yml', "config/locales/translation_#{locale_name}.yml", :assigns => {:locale_name => locale_name, :translations => yaml.to_s}
       end
 
       private
@@ -50,8 +55,14 @@ module I18nGenerator::Generator
         end
       end
 
+      # mixin translations into existing yaml file
       def generate_yaml(locale_name, translations)
-        template 'i18n:translation.yml', "config/locales/translation_#{locale_name}.yml", :assigns => {:locale_name => locale_name, :translations => translations}
+        yaml = YamlDocument.new("config/locales/translation_#{locale_name}.yml", locale_name)
+        each_value [], translations do |parents, value|
+          node = parents.inject(yaml[locale_name]) {|node, parent| node[parent]}
+          node.value = value
+        end
+        yaml
       end
 
       # receives an array of keys and returns :key => :translation hash
@@ -85,15 +96,13 @@ module I18nGenerator::Generator
         end
       end
 
-      def yamlize(hash, nest_level)
-        returning '' do |s|
-          hash.each do |k, v|
-            if v.is_a?(ActiveSupport::OrderedHash)
-              s << "#{'  ' * nest_level}#{k}:\n"
-              s << yamlize(v, nest_level + 1)
-            else
-              s << "#{'  ' * nest_level}#{k}: #{v}\n"
-            end
+      # iterate through all values
+      def each_value(parents, src, &block)
+        src.each do |k, v|
+          if v.is_a?(ActiveSupport::OrderedHash)
+            each_value parents + [k], v, &block
+          else
+            yield parents + [k], v
           end
         end
       end

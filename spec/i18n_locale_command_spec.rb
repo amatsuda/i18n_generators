@@ -51,9 +51,9 @@ end"
       it 'adds the default_locale config inside the config block and sets locale_name value' do
         @command.send(:add_locale_config, @config).should == "
 Rails::Initializer.run do |config|
+  config.i18n.default_locale = 'ja'
   something goes here.
   bla bla bla...
-  config.i18n.default_locale = 'ja'
 end"
       end
     end

@@ -6,18 +6,17 @@ describe I18nGenerator::Generator::Commands::Create do
     @command.stub!(:locale_name).and_return('ja')
   end
 
-  describe 'yamlizes a given Hash' do
-    it 'yamlizes a simple hash' do
+  describe 'each_value' do
+    it 'iterates through each value' do
       hash = ActiveSupport::OrderedHash.new
-      hash[:key] = 'value'
-      @command.__send__(:yamlize, hash, 0).should == "key: value\n"
-    end
-
-    it 'yamlizes a nested hash' do
-      hash = ActiveSupport::OrderedHash.new
-      hash[:parent] = ActiveSupport::OrderedHash.new
-      hash[:parent][:child] = 'child value'
-      @command.__send__(:yamlize, hash, 0).should == "parent:\n  child: child value\n"
+      hash[:parent1] = ActiveSupport::OrderedHash.new
+      hash[:parent1][:child1] = 'child one'
+      hash[:parent2] = ActiveSupport::OrderedHash.new
+      hash[:parent2][:child2] = 'child two'
+      hash[:parent2][:child3] = 'child three'
+      @command.__send__(:each_value, [], hash) do |parents, value|
+        p "#{parents.join('.')} #{value}"
+      end
     end
   end
 end

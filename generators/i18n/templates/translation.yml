@@ -1,2 +1,1 @@
-<%= locale_name %>:
-<%= yamlize translations, 1 %>
+<%= translations %>

@@ -2,7 +2,7 @@ require 'rubygems'
 require 'rails_generator'
 require 'rails_generator/commands'
 require 'gettext'
-require File.join(File.dirname(__FILE__), 'lib/yaml')
+require File.join(File.dirname(__FILE__), '../i18n/lib/yaml')
 require File.join(File.dirname(__FILE__), 'lib/cldr')
 include I18nLocaleGeneratorModule
 

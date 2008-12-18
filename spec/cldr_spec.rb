@@ -1,5 +1,6 @@
 $KCODE = 'U'
 
+require File.join(File.dirname(__FILE__), 'spec_helper')
 require File.join(File.dirname(__FILE__), '../generators/i18n_locale/lib/cldr')
 include I18nLocaleGeneratorModule
 

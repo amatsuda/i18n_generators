@@ -1,0 +1,63 @@
+== 0.4.0
+
+* major enhancements:
+  * translation generator now preserves any existing extra lines in the YAML file (thanks to Iain Hecker-san!)
+
+== 0.3.4
+
+* enhancements:
+  * Reduce unnecessary request to CLDR site
+
+== 0.3.3
+
+* bugfixes:
+  * Did not work on Ruby 1.8.6 (thanks to akm-san!)
+
+== 0.3.2
+
+* bugfixes:
+  * Trim mode in ERB didn't work on some platforms (thanks to valda-san!)
+
+== 0.3.1
+
+* enhancements:
+  * Translate all keys simultaneously using thread
+  * Translations with :scope is going to be yamlized with proper hierarchy
+
+== 0.3.0
+
+* major enhancements:
+  * Renamed the generators
+      i18n_locales -> i18n_locale (i18n --locale)
+      i18n_models -> i18n_translation (i18n --translation)
+  * Handle all translate keys which appear in view files (thanks to PanosJee-san!)
+
+== 0.2.0
+
+* major enhancements:
+  * Implemented i18n_scaffold generator (thanks to Iain Hecker-san!)
+
+* enhancements:
+  * i18n_models generator can now deal with non AR classes which has content_columns (thanks to Iain Hecker-san!)
+
+== 0.1.0
+
+* major enhancements:
+  * Fetch locale YAML file from rails-i18n project repository first
+
+* bugfixes:
+  * Could not recognize model names with multipie words (thanks to makoto-san!)
+
+== 0.0.8
+
+* major enhancements:
+  * Lots of changes for this commit by DHH http://github.com/rails/rails/commit/d9b92ee11b33fed5c7a94a91415fa846705f7dd3
+
+== 0.0.4
+
+* Gemified on GitHub
+
+== 0.0.1
+
+* Birthday!
+

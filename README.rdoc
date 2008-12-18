@@ -39,9 +39,15 @@ This will generate following locale file.
 The generator copies the en.yml file (bundled inside Rails framework) into config/locales directory, and one-to-one localizes/translates each attribute value into the specified locale/language.
 Then the generater sets the application default locale to the specified locale.
 
-This will generate following locale file.
+For example,
 
-    config/locales/ja.yml
+% ./script/generate i18n_locale zh
+
+will generate following locale files.
+
+    config/locales/active_support_zh.yml
+    config/locales/active_record_zh.yml
+    config/locales/action_view_zh.yml
 
 === 3. Generate Translation YAML File For All Models/Attributes and views/**/*.erb
 
@@ -58,7 +64,7 @@ This will generate following YAML file.
 The generator scans your app/models directory, and generates a YAML file with all the AR model names and attributes so that you don't have to write the YAML skeleton manually or by copy/paste.
 In addition, the generator scans all the *.erb files in your app/views/** directory, and picks all the keys for I18n.translate, then adds them to the YAML file.
 In addition, the generator tries to translate each of them into the specified language.
-The generator doesn't overwrite the existing value so that you can rerun the generator again and again just like Annotate Model plugin.
+The generator doesn't overwrite the existing value so that you can rerun the generator again and again just like Annotate Model command.
 
 === 4. Generate All
 
@@ -78,7 +84,9 @@ Executes 2 and 3 at once.
 
 * As a gem
 
-% sudo gem install amatsuda-i18n_generators -s http://gems.github.com
+% sudo gem source http://gems.github.com
+
+% sudo gem install amatsuda-i18n_generators
 
 * As a Rails plugin
 
@@ -87,7 +95,7 @@ Executes 2 and 3 at once.
 
 == CAUTION
 
-Current version of this plugin is very very very very roughly implemented just for experiment.
+Current version of this plugin is very very very roughly implemented just for experiment.
 Every time you execute the generate command, the plugin connects to the Unicode CLDR website and scrapes the huge amount of its contents.
 Please be careful not to harm your network environment and CLDR website by running this plugin too many times.
 

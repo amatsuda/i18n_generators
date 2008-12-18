@@ -35,10 +35,13 @@ class I18nGenerator < Rails::Generator::NamedBase
     record do |m|
       m.directory 'config/locales'
       unless options[:generate_translation_only]
+        logger.debug 'updating environment.rb ...'
         m.generate_configuration
         if defined_in_rails_i18n_repository?
+          logger.debug "fetching #{locale_name}.yml from rails-i18n repository..."
           m.fetch_from_rails_i18n_repository
         else
+          logger.debug "generating #{locale_name} YAML files for Rails..."
           m.active_support_yaml
           m.active_record_yaml
           m.action_view_yaml

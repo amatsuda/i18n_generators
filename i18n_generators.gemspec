@@ -9,6 +9,7 @@ Gem::Specification.new do |s|
   s.has_rdoc = false
   s.authors  = ['Akira Matsuda']
   s.files    = %w[
+History.txt
 MIT-LICENSE
 README.rdoc
 Rakefile

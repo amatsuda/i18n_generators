@@ -1,3 +1,4 @@
+# encoding: utf-8
 $KCODE = 'U'
 
 require File.join(File.dirname(__FILE__), 'spec_helper')

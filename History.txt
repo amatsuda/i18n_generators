@@ -1,3 +1,8 @@
+== 0.4.1
+
+* bugfixes:
+  * i18n_translation abnormally ends when loading a view containing "-%>" (thanks to babie-san!)
+
 == 0.4.0
 
 * major enhancements:

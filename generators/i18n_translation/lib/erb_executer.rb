@@ -15,7 +15,10 @@ module I18nTranslationGeneratorModule
               def method_missing(method, *args, &block); nil; end
             end
 
-            def_erb_method 'execute', '#{filename}'
+            fname = '#{filename}'
+            erb = nil
+            File.open(fname) {|f| erb = ERB.new(f.read, nil, '-') }
+            erb.def_method(self, 'execute', fname)
           end
         EOS
         m.const_get('Executer').new.execute { }

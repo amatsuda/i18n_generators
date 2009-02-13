@@ -1,3 +1,4 @@
+# encoding: utf-8
 $KCODE = 'U'
 
 require 'open-uri'

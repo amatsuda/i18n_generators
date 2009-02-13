@@ -8,7 +8,7 @@ module I18nTranslationGeneratorModule
 
     def translate(locale, key, options = {})
 #       @keys << key.to_sym
-      @keys << (Array(options[:scope]) + [key]).map.flatten.join('.')
+      @keys << (Array(options[:scope]) + [key]).flatten.join('.')
     end
     alias :t :translate
   end

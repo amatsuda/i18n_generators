@@ -66,7 +66,7 @@ class I18nGenerator < Rails::Generator::NamedBase
   private
   def defined_in_rails_i18n_repository?
     begin
-      uri = "http://github.com/svenfuchs/rails-i18n/tree/master/rails/locale/#{locale_name}.yml"
+      uri = "http://github.com/svenfuchs/rails-i18n/blob/master/rails/locale/#{locale_name}.yml"
       OpenURI.open_uri(uri) do |res|
         (res.base_uri.to_s == uri) && (res.status == %w[200 OK])
       end

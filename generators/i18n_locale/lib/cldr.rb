@@ -4,12 +4,10 @@ require 'open-uri'
 
 module I18nLocaleGeneratorModule
   class CldrDocument
+    extend ActiveSupport::Memoizable
+
     def initialize(locale_name)
       @locale_name = locale_name
-      @summaries = [load_cldr_data(locale_name.tr('-', '_'))]
-      if locale_name =~ /^[a-zA-Z]{2}[-_][a-zA-Z]{2}$/
-        @summaries << load_cldr_data(locale_name.to(1))
-      end
     end
 
     def lookup(path)
@@ -98,6 +96,14 @@ module I18nLocaleGeneratorModule
     end 
 
     private
+    def summaries
+      @summaries = [load_cldr_data(@locale_name.tr('-', '_'))]
+      if @locale_name =~ /^[a-zA-Z]{2}[-_][a-zA-Z]{2}$/
+        @summaries << load_cldr_data(@locale_name.to(1))
+      end
+    end
+    memoize :summaries
+
     def load_cldr_data(locale_name)
       cldr = begin
         OpenURI.open_uri("http://www.unicode.org/cldr/data/charts/summary/#{locale_name}.html").read
@@ -111,7 +117,7 @@ module I18nLocaleGeneratorModule
     def search(n1, n2, g)
       pattern = Regexp.new /<tr><td>\d*<\/td><td class='[ng]'>#{Regexp.quote(n1)}<\/td><td class='[ng]'>#{Regexp.quote(n2)}<\/td><td class='[ng]'>#{Regexp.quote(g)}<\/td>/
       extract_pattern = /<td class='v'>(?:<span.*?>)?(.*?)(?:<\/span>)?<\/td><td>/
-      @summaries.each do |summary|
+      summaries.each do |summary|
         _, value = *extract_pattern.match(summary.grep(pattern).first)
         return value unless value.nil?
       end

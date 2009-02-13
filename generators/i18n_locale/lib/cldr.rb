@@ -111,7 +111,9 @@ module I18nLocaleGeneratorModule
         puts "WARNING: Couldn't find locale data for #{locale_name} on the web."
         ''
       end
-      cldr.split("\n").grep(/^<tr>/).delete_if {|r| r =~ /^<tr><td>\d*<\/td><td class='[gn]'>names<\/td>/}
+      lines = cldr.split("\n").grep(/^<tr>/)
+      lines.delete_if {|r| r =~ /^<tr><td>\d*<\/td><td class='[gn]'>names<\/td>/}
+      'Ruby 1.9'.respond_to?(:force_encoding) ? lines.map {|l| l.force_encoding 'UTF-8'} : lines
     end
 
     def search(n1, n2, g)

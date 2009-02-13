@@ -29,7 +29,7 @@ module I18nGenerator::Generator
         logger.debug "#{models.size} models found."
 
         # pick all translated keywords from view files
-        original_backend = I18n.backend
+        original_backend = I18n.backend.dup
         I18n.backend = RecordingBackend.new
 
         Dir["#{RAILS_ROOT}/app/views/**/*.erb"].each do |f|

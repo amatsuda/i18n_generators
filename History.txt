@@ -1,3 +1,13 @@
+== 0.5.0
+
+* bugfixes:
+  * Could not fetch the locale files via GitHub (GitHub changed the URL?)
+* major enhancements:
+  * Ruby 1.9 ready!
+  * Never connect to CLDR site when the locale file found in Sven's rails-i18n repository
+* enhancements:
+  * Use Ruby 1.9 built-in JSON parser if Ruby 1.9
+
 == 0.4.1
 
 * bugfixes:

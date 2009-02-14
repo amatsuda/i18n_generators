@@ -1,11 +1,11 @@
 Gem::Specification.new do |s|
   s.name     = 'i18n_generators'
-  s.version  = '0.4.1'
-  s.date     = '2009-01-21'
-  s.summary  = 'Generates I18n locale files for Rails 2.2'
+  s.version  = '0.5.0'
+  s.date     = '2009-02-15'
+  s.summary  = 'Generates I18n locale files for Rails 2.2 and 2.3'
   s.email    = 'ronnie@dio.jp'
   s.homepage = 'http://github.com/amatsuda/i18n_generators/'
-  s.description = 'A Rails generator plugin & gem that generates Rails 2.2 I18n locale files for almost every known locale.'
+  s.description = 'A Rails generator plugin & gem that generates Rails 2.2 and 2.3 I18n locale files for almost every known locale.'
   s.has_rdoc = false
   s.authors  = ['Akira Matsuda']
   s.files    = %w[

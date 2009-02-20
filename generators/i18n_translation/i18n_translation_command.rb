@@ -39,13 +39,17 @@ module I18nGenerator::Generator
         (translation_keys += I18n.backend.keys).uniq!
         I18n.backend = original_backend
 
-        # translate all keys and generate the YAML file
-        now = Time.now
-        translations = translate_all(translation_keys)
-        logger.debug "took #{Time.now - now} secs to translate."
+        if translation_keys.blank?
+          logger.info "No translation keys found. Skipped generating translation_#{locale_name}.yml file."
+        else
+          # translate all keys and generate the YAML file
+          now = Time.now
+          translations = translate_all(translation_keys)
+          logger.debug "took #{Time.now - now} secs to translate."
 
-        yaml = generate_yaml(locale_name, translations)
-        template 'i18n:translation.yml', "config/locales/translation_#{locale_name}.yml", :assigns => {:locale_name => locale_name, :translations => yaml.to_s}
+          yaml = generate_yaml(locale_name, translations)
+          template 'i18n:translation.yml', "config/locales/translation_#{locale_name}.yml", :assigns => {:locale_name => locale_name, :translations => yaml.to_s}
+        end
       end
 
       private

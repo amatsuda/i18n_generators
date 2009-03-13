@@ -25,7 +25,7 @@ module I18nGenerator::Generator
 
       def fetch_from_rails_i18n_repository
         file('i18n:base.yml', "config/locales/#{locale_name}.yml") do |f|
-          OpenURI.open_uri("http://github.com/svenfuchs/rails-i18n/blob/master/rails/locale/#{locale_name}.yml?raw=true").read
+          OpenURI.open_uri("http://github.com/svenfuchs/rails-i18n/raw/master/rails/locale/#{locale_name}.yml").read
         end
       end
 

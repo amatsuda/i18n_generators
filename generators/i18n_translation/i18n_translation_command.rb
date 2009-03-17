@@ -24,7 +24,8 @@ module I18nGenerator::Generator
         translation_keys = []
         translation_keys += models.map {|m| "activerecord.models.#{m.english_name}"}
         models.each do |model|
-          translation_keys += model.content_columns.map {|c| "activerecord.attributes.#{model.english_name}.#{c.name}"}
+          cols = model.content_columns + model.reflect_on_all_associations
+          translation_keys += cols.map {|c| "activerecord.attributes.#{model.english_name}.#{c.name}"}
         end
         logger.debug "#{models.size} models found."
 

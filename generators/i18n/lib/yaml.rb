@@ -52,7 +52,7 @@ module I18nLocaleGeneratorModule
         else
           %Q["#{self.value}"]
         end
-        "#{' ' * self.indent_level}#{self.key}: #{v}"
+        "#{' ' * self.indent_level}#{self.key}: #{v}  #g"  # g is for 'generated'!
       else
         @text
       end

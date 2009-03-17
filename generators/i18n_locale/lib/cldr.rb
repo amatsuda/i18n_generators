@@ -98,9 +98,10 @@ module I18nLocaleGeneratorModule
 
     private
     def summaries
-      s = [load_cldr_data(@locale_name.tr('-', '_'))]
-      if @locale_name =~ /^[a-zA-Z]{2}[-_][a-zA-Z]{2}$/
-        s << load_cldr_data(@locale_name.to(1))
+      returning [load_cldr_data(@locale_name.tr('-', '_'))] do |s|
+        if @locale_name =~ /^[a-zA-Z]{2}[-_][a-zA-Z]{2}$/
+          s << load_cldr_data(@locale_name.to(1))
+        end
       end
     end
     memoize :summaries

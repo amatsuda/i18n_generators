@@ -4,7 +4,7 @@ require 'rails_generator/commands'
 require 'gettext'
 
 class I18nGenerator < Rails::Generator::NamedBase
-  attr_reader :locale_name, :cldr, :translator, :generate_translation_only, :generate_locale_only
+  attr_reader :locale_name, :cldr, :translator, :generate_translation_only, :generate_locale_only, :include_timestamps
 
   def initialize(runtime_args, runtime_options = {})
     if options[:scaffold]
@@ -29,6 +29,7 @@ class I18nGenerator < Rails::Generator::NamedBase
       lang = @locale_name.sub(/-.*$/, '')
       @translator = Translator.new lang
     end
+    @include_timestamps = true if options[:include_timestamps]
   end
 
   def manifest
@@ -59,8 +60,9 @@ class I18nGenerator < Rails::Generator::NamedBase
     opt.separator 'Options:'
     opt.on('--translation',
            'Generate translations for all models with their attributes and all translation keys in the view files.') {|v| options[:generate_translation_only] = v}
-    opt.on('--locale',
-           'Generate locale files.') {|v| options[:generate_locale_only] = v}
+    opt.on('--locale', 'Generate locale files.') {|v| options[:generate_locale_only] = v}
+    opt.on('--include-timestamps', 'Include timestamp columns in the YAML translation.') {|v| options[:include_timestamps] = v}
+    opt.on('--include-timestamp', 'Include timestamp columns in the YAML translation.') {|v| options[:include_timestamps] = v}
   end
 
   private

@@ -25,6 +25,7 @@ module I18nGenerator::Generator
         translation_keys += models.map {|m| "activerecord.models.#{m.english_name}"}
         models.each do |model|
           cols = model.content_columns + model.reflect_on_all_associations
+          cols.delete_if {|c| %w[created_at updated_at].include? c.name} unless self.include_timestamps
           translation_keys += cols.map {|c| "activerecord.attributes.#{model.english_name}.#{c.name}"}
         end
         logger.debug "#{models.size} models found."

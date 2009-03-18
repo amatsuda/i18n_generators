@@ -1,3 +1,16 @@
+== 0.6.0
+
+* bugfixes:
+  * Could not load cldr data with short locale names
+* major enhancements:
+  * Include AR association names in model attributes translation
+  * Add 'generated' comment mark (#g) for generated lines in YAML (thanks to t-wada-senpai, Shimura-san, Toyofuku-san, Sezutsu-san and oukayuka-san!)
+  * Add --include-timestamps option and change default bahaviour not to include timestamp columns in translation YAML
+  * Add blank line between each blocks (thanks to Sawayanagi-san!)
+* enhancements:
+  * Avoid generating blank locale file
+  * Change GitHub fetch URL from blob/master/...?raw=true to raw/master
+
 == 0.5.0
 
 * bugfixes:

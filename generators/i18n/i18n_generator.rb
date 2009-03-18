@@ -1,7 +1,6 @@
 require 'rubygems'
 require 'rails_generator'
 require 'rails_generator/commands'
-require 'gettext'
 
 class I18nGenerator < Rails::Generator::NamedBase
   attr_reader :locale_name, :cldr, :translator, :generate_translation_only, :generate_locale_only, :include_timestamps
@@ -19,11 +18,12 @@ class I18nGenerator < Rails::Generator::NamedBase
       exit
     end
     @locale_name = name.length == 5 ? "#{name[0..1].downcase}-#{name[3..4].upcase}" : "#{name[0..1].downcase}"
-    GetText.bindtextdomain 'rails'
-    GetText.locale = @locale_name
 
     unless options[:generate_translation_only]
+      require 'gettext'
       @cldr = CldrDocument.new @locale_name
+      GetText.bindtextdomain 'rails'
+      GetText.locale = @locale_name
     end
     unless options[:generate_locale_only]
       lang = @locale_name.sub(/-.*$/, '')

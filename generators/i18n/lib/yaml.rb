@@ -147,7 +147,7 @@ module I18nLocaleGeneratorModule
     def to_s(add_blank_line = false)
       previous_indent_level = 0
       @lines.inject('') do |ret, n|
-        ret << "\n" if add_blank_line && (n.indent_level < previous_indent_level)
+        ret << "\n" if add_blank_line && (n.indent_level < previous_indent_level) && !n.text.blank? && !ret.ends_with?("\n\n")
         previous_indent_level = n.indent_level
         ret << n.text + "\n"
       end

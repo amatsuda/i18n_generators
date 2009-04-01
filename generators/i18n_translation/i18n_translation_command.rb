@@ -93,11 +93,11 @@ module I18nGenerator::Generator
               Thread.pass
               if key.to_s.include? '.'
                 key_prefix, key_suffix = key.to_s.split('.')[0...-1], key.to_s.split('.')[-1]
-                existing_translation = I18n.t(key, :default => key_suffix, :locale => locale_name)
-                key_prefix.inject(oh) {|h, k| h[k]}[key_suffix] = existing_translation != key_suffix ? existing_translation : translator.translate(key_suffix)
+                existing_translation = I18n.backend.send(:lookup, locale_name, key_suffix, key_prefix)
+                key_prefix.inject(oh) {|h, k| h[k]}[key_suffix] = existing_translation ? existing_translation : translator.translate(key_suffix)
               else
-                existing_translation = I18n.t(key, :default => key, :locale => locale_name)
-                oh[key] = existing_translation != key ? existing_translation : translator.translate(key)
+                existing_translation = I18n.backend.send(:lookup, locale_name, key)
+                oh[key] = existing_translation ? existing_translation : translator.translate(key)
               end
             end
           end

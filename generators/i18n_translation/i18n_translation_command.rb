@@ -69,7 +69,11 @@ module I18nGenerator::Generator
         yaml = YamlDocument.new("config/locales/translation_#{locale_name}.yml", locale_name)
         each_value [], translations do |parents, value|
           node = parents.inject(yaml[locale_name]) {|node, parent| node[parent]}
-          node.value = value
+          if value.is_a? String
+            node.value = value
+          else
+            value.each {|key, val| node[key].value = val}
+          end
         end
         yaml
       end

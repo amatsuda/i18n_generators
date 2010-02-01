@@ -20,6 +20,7 @@ class I18nGenerator < Rails::Generator::NamedBase
     @locale_name = name.length == 5 ? "#{name[0..1].downcase}-#{name[3..4].upcase}" : "#{name[0..1].downcase}"
 
     unless options[:generate_translation_only]
+      gem 'gettext', '<2'
       require 'gettext'
       @cldr = CldrDocument.new @locale_name
       GetText.bindtextdomain 'rails'

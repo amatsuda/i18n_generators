@@ -49,6 +49,6 @@ spec/i18n_translation_command_spec.rb
 spec/translator_spec.rb
 spec/yaml_spec.rb]
   s.rubygems_version = '1.3.1'
-  s.add_dependency 'gettext'
+  s.add_dependency 'gettext', '< 2'
 end
 

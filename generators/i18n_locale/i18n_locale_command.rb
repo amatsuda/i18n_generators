@@ -1,6 +1,7 @@
 require 'rubygems'
 require 'rails_generator'
 require 'rails_generator/commands'
+gem 'gettext', '<2'
 require 'gettext'
 require File.join(File.dirname(__FILE__), '../i18n/lib/yaml')
 require File.join(File.dirname(__FILE__), 'lib/cldr')

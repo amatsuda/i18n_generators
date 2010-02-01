@@ -149,7 +149,7 @@ module I18nLocaleGeneratorModule
       @lines.inject('') do |ret, n|
         ret << "\n" if add_blank_line && (n.indent_level < previous_indent_level) && !n.text.blank? && !ret.ends_with?("\n\n")
         previous_indent_level = n.indent_level
-        ret << n.text + "\n"
+        ret << (n.text ? n.text.rstrip : '') + "\n"
       end
     end
   end

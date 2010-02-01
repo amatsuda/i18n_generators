@@ -13,8 +13,11 @@ module I18nGenerator::Generator
         I18n.locale = locale_name
         models = model_filenames.map do |model_name|
           model = begin
-            m = model_name.camelize.constantize
-            next unless m.respond_to?(:content_columns)
+            m = begin
+              model_name.camelize.constantize
+            rescue LoadError
+            end
+            next if m.nil? || !m.table_exists? || !m.respond_to?(:content_columns)
             m.class_eval %Q[def self.english_name; "#{model_name}"; end]
             m
           rescue

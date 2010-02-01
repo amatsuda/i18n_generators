@@ -49,8 +49,8 @@ module I18nGenerator::Generator
           translations = translate_all(translation_keys)
           logger.debug "took #{Time.now - now} secs to translate."
 
-          yaml = generate_yaml(locale_name, translations)
-          template 'i18n:translation.yml', "config/locales/translation_#{locale_name}.yml", :assigns => {:locale_name => locale_name, :translations => yaml.to_s(true)}
+          yaml = generate_yaml(locale_name, translations).to_s(true)
+          template 'i18n:translation.yml', "config/locales/translation_#{locale_name}.yml", :assigns => {:locale_name => locale_name, :translations => yaml}
         end
       end
 

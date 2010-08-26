@@ -1,3 +1,4 @@
+require 'rubygems'
 require 'rake'
 require 'rake/testtask'
 require 'rake/rdoctask'
@@ -31,6 +32,7 @@ begin
     gemspec.homepage = 'http://github.com/amatsuda/i18n_generators/'
     gemspec.authors = ['Akira Matsuda']
   end
+  Jeweler::GemcutterTasks.new
 rescue LoadError
   puts 'Jeweler not available. Install it with: gem install jeweler'
 end

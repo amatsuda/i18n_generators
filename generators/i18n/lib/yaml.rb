@@ -115,7 +115,7 @@ module I18nLocaleGeneratorModule
       @current_line = child.line
       while n = self.prev
         return n if n.indent_level == child.indent_level - 2
-      end 
+      end
       self
     end
 
@@ -185,4 +185,3 @@ module I18nLocaleGeneratorModule
     end
   end
 end
-

@@ -16,10 +16,12 @@ Gem::Specification.new do |s|
     "README.rdoc"
   ]
   s.files = [
-    "History.txt",
+    ".gitignore",
+     "History.txt",
      "MIT-LICENSE",
      "README.rdoc",
      "Rakefile",
+     "VERSION",
      "generators/i18n/USAGE",
      "generators/i18n/i18n_generator.rb",
      "generators/i18n/lib/yaml.rb",

@@ -1,3 +1,16 @@
+== 0.8.0
+
+* major enhancements:
+  * Gemify
+
+== 0.7.0
+
+* major enhancements:
+  * Fix gettext dependency version
+* enhancements:
+  * Add more error checks when loading models
+  * Load gettext only when using it
+
 == 0.6.0
 
 * bugfixes:

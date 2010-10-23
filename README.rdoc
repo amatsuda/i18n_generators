@@ -1,83 +1,54 @@
 = I18n generators
 
-This gem plugin generates a set of locale files for Rails 2.2 and 2.3 i18n feature.
+This gem plugin generates a set of locale files for Rails 3 i18n feature.
 
-* http://github.com/amatsuda/i18n_generators/tree/master
+* http://github.com/amatsuda/i18n_generators
+* http://rubygems.org/gems/i18n_generators
 
+For Rails 2.3 and 2.2, use 0.8.x gem or rails2 branch.
+
+* http://github.com/amatsuda/i18n_generators/tree/rails2
+* http://rubygems.org/gems/i18n_generators/versions/0.8.1
 
 == FEATURES
 
-This gem/plugin provides following four script/generate commands.
+This gem/plugin provides following generate commands.
 
-=== 1. Generate I18n Scaffold
+=== 1. Generate Locale Files for ActiveRecord/ActiveSupport/ActionPack
 
-% ./script/generate i18n_scaffold ja (de-AT, pt-BR, etc.)
+% rails g i18n_locale ja (de-AT, pt-BR, etc.)
 
-Generates I18n aware scaffold.
+Downloads the .yml file for the specified locale from the official rails-i18n repository:
+    http://github.com/svenfuchs/rails-i18n/tree/master/rails/locale
 
-=== 2. Generate Locale Files for ActiveRecord/ActiveSupport/ActionPack
-
-% ./script/generate i18n_locale ja (de-AT, pt-BR, etc.)
-
-or
-
-% ./script/generate i18n --locale ja (de-AT, pt-BR, etc.)
-
-* A. If The Locale File Exists In Rails-I18n Repository
-
-Firstly, the generator checks here.
-http://github.com/svenfuchs/rails-i18n/tree/master/rails/locale
-If the spacified .yml file exists in the repository, the generator downloads and puts the file into your config/locales directory.
 Then the generater sets the application default locale to the specified locale.
 
 This will generate following locale file.
 
     config/locales/ja.yml
 
-* B. Else
+=== 2. Generate Translation YAML File For All Models/Attributes
 
-The generator copies the en.yml file (bundled inside Rails framework) into config/locales directory, and one-to-one localizes/translates each attribute value into the specified locale/language.
-Then the generater sets the application default locale to the specified locale.
-
-For example,
-
-% ./script/generate i18n_locale zh
-
-will generate following locale files.
-
-    config/locales/active_support_zh.yml
-    config/locales/active_record_zh.yml
-    config/locales/action_view_zh.yml
-
-=== 3. Generate Translation YAML File For All Models/Attributes and views/**/*.erb
-
-% ./script/generate i18n_translation ja (de-AT, pt-BR, etc.)
-
-or
-
-% ./script/generate i18n --translation ja (de-AT, pt-BR, etc.)
+% rails g i18n_translation ja (de-AT, pt-BR, etc.)
 
 This will generate following YAML file.
 
     config/locales/translation_ja.yml
 
 The generator scans your app/models directory, and generates a YAML file with all the AR model names and attributes so that you don't have to write the YAML skeleton manually or by copy/paste.
-In addition, the generator scans all the *.erb files in your app/views/** directory, and picks all the keys for I18n.translate, then adds them to the YAML file.
 In addition, the generator tries to translate each of them into the specified language.
-The generator doesn't overwrite the existing value so that you can rerun the generator again and again just like Annotate Model command.
+The generator doesn't overwrite the existing value so that you can rerun the generator again and again.
 
-=== 4. Generate All
+=== 3. Generate All
 
-% ./script/generate i18n ja (de-AT, pt-BR, etc.)
+% rails g i18n ja (de-AT, pt-BR, etc.)
 
-Executes 2 and 3 at once.
+Executes 1 and 2 at once.
 
 
 == REQUIREMENTS:
 
-* Ruby on Rails (>= 2.2)
-* Ruby-GetText-Package ( http://rubyforge.org/projects/gettext/ )
-* high speed Internet connection
+* Ruby on Rails (>= 3.0)
 
 
 == INSTALL:
@@ -88,14 +59,7 @@ Executes 2 and 3 at once.
 
 * As a Rails plugin
 
-% ./script/plugin install git://github.com/amatsuda/i18n_generators.git
-
-
-== CAUTION
-
-Current version of this plugin is very very very roughly implemented just for experiment.
-Every time you execute the generate command, the plugin connects to the Unicode CLDR website and scrapes the huge amount of its contents.
-Please be careful not to harm your network environment and CLDR website by running this plugin too many times.
+% rails plugin install git://github.com/amatsuda/i18n_generators.git
 
 
 Copyright (c) 2008  Akira Matsuda, released under the MIT license

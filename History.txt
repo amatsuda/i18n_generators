@@ -1,3 +1,8 @@
+== 1.0.0
+
+* major enhancements:
+  * Rails 3
+
 == 0.8.1
 
 * bugfixes:
@@ -106,4 +111,3 @@
 == 0.0.1
 
 * Birthday!
-

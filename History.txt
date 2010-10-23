@@ -1,3 +1,8 @@
+== 0.8.1
+
+* bugfixes:
+  * Fix for pluralized translations (scambra)
+
 == 0.8.0
 
 * major enhancements:

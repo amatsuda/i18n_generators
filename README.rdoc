@@ -1,6 +1,6 @@
 = I18n generators
 
-This gem plugin generates a set of locale files for Rails 2.2 i18n feature.
+This gem plugin generates a set of locale files for Rails 2.2 and 2.3 i18n feature.
 
 * http://github.com/amatsuda/i18n_generators/tree/master
 
@@ -84,9 +84,7 @@ Executes 2 and 3 at once.
 
 * As a gem
 
-% sudo gem source http://gems.github.com
-
-% sudo gem install amatsuda-i18n_generators
+% gem install i18n_generators
 
 * As a Rails plugin
 
@@ -101,4 +99,3 @@ Please be careful not to harm your network environment and CLDR website by runni
 
 
 Copyright (c) 2008  Akira Matsuda, released under the MIT license
-

@@ -1,0 +1,10 @@
+Description:
+    Generates a config file and locale files for Rails i18n feature.
+
+Example:
+    % rails g i18n locale_name (ja, pt-BR, etc.)
+
+    This will create:
+        config/locales/ja.yml
+    And update:
+        config/application.rb

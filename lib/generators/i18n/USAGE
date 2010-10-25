@@ -1,0 +1,12 @@
+Description:
+    Generates a config file and locale files and a model/attributes translation file for Rails i18n feature.
+    In other words, executes i18n_locale and i18n_translation at once.
+
+Example:
+    % rails g i18n locale_name (ja, pt-BR, etc.)
+
+    This will create:
+        config/locales/ja.yml
+        config/locales/translation_ja.yml
+    And update:
+        config/application.rb

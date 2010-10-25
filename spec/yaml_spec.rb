@@ -1,59 +1,123 @@
 require File.join(File.dirname(__FILE__), 'spec_helper')
-require File.join(File.dirname(__FILE__), '/../generators/i18n/lib/yaml')
+require File.join(File.dirname(__FILE__), '../lib/generators/i18n_translation/lib/yaml')
 
-include I18nLocaleGeneratorModule
-
-describe 'Yaml' do
-  before :each do
-    @yaml = YamlDocument.new File.join(File.dirname(__FILE__), 'data/yml/active_record/en-US.yml'), 'ja'
-  end
-
-  describe YamlDocument do
-    it 'should return the top level node with the square bracket method' do
-      node = @yaml['ja']
-      node.should be_an_instance_of(Node)
-      node.key.should == 'ja'
-    end
-
-    it 'should generate a path string on the top node' do
-      @yaml['ja'].path.should == '/ja'
-    end
-  end
-
-  describe Node do
+describe I27r::YamlDocument do
+  context 'when loading an existing file' do
     before do
-      @node = Node.new @yaml, 100, 'foo: bar'
+      @yaml_string = <<YAML
+ja:
+  hoge:
+    fuga: piyo  #g
+    numbers:
+      one: "いち"  #g
+      two: "に"
+
+    aaa:
+      foo: "ふー"
+      bar: "ばー"
+YAML
+      @yaml = I27r::YamlDocument.new @yaml_string
     end
 
-    it 'should return a key string from input text' do
-      @node.key.should == 'foo'
+    subject { @yaml }
+    it { should be }
+
+    its(:to_s) { should == @yaml_string }
+
+    describe '[]' do
+      specify '[]' do
+        @yaml['ja', 'hoge', 'fuga'].should == 'piyo'
+        @yaml[['ja', 'hoge', 'fuga']].should == 'piyo'
+      end
     end
 
-    it 'should return a value string from input text' do
-      @node.value.should == 'bar'
+    describe 'find_line_by_path' do
+      subject { @yaml.find_line_by_path(['ja', 'hoge', 'fuga']) }
+      its(:value) { should == 'piyo' }
     end
 
-    it 'should generate a path string on any node' do
-      @yaml['ja']['activerecord']['errors']['messages'].path.should == '/ja/activerecord/errors/messages'
+    describe 'find_line_by_path' do
+      subject { @yaml.find_line_by_path(['ja', 'aho', 'hage'], -1, true) }
+      it { should be }
+      its(:key) { should == 'hage' }
+      its(:value) { should_not be }
     end
 
-    describe '[] method' do
-      describe 'when a child with the specified key exists' do
-        it 'should return a child which has the specified key'
-
-        it 'should not modify the YAML contents'
+    describe '[]=' do
+      context 'rewriting an existing value' do
+        before { @yaml['ja', 'hoge', 'fuga'] = 'puyo' }
+        subject { @yaml['ja', 'hoge', 'fuga'] }
+        it { should == 'puyo' }
       end
 
-      describe 'when a child with the specified key exists' do
-        it 'should return a new node with the specified key'
-
-        it 'should append the created node under the current node'
-
-        it 'should append the created line to the YAML document'
-
-        it 'should increment the line number of the succeeding lines of the newly added line'
+      context 'an existing value without #g mark' do
+        before { @yaml['ja', 'hoge', 'numbers', 'two'] = 'ツー' }
+        subject { @yaml['ja', 'hoge', 'numbers', 'two'] }
+        it { should == 'に' }
       end
+
+      context 'creating a new node in the middle' do
+        before { @yaml['ja', 'hoge', 'numbers', 'three'] = 'さん' }
+        subject { @yaml['ja', 'hoge', 'numbers', 'three'] }
+        it { should == 'さん' }
+        specify do
+          @yaml.to_s.should ==  <<YAML
+ja:
+  hoge:
+    fuga: piyo  #g
+    numbers:
+      one: "いち"  #g
+      two: "に"
+      three: "さん"  #g
+
+    aaa:
+      foo: "ふー"
+      bar: "ばー"
+YAML
+        end
+      end
+
+      context 'creating a new node at the bottom' do
+        before { @yaml['ja', 'aho', 'hage'] = 'hige' }
+        subject { @yaml['ja', 'aho', 'hage'] }
+        it { should == 'hige' }
+      end
+
+    end
+  end
+
+  context 'when loading an existing file with alias' do
+    before do
+      @yaml_string = <<YAML
+ja:
+  activerecord:
+    attributes:
+      hoge: &hoge
+        foo: FOO
+        bar: BAR
+      hoge2: &hoge2
+        hoge:
+        <<:  *hogege
+YAML
+      @yaml = I27r::YamlDocument.new @yaml_string
+      @yaml['ja', 'activerecord', 'hoge2', 'hoge'] = 'foo'
+    end
+
+    specify '' do
+      puts @yaml.to_s
+    end
+  end
+
+  context 'creating a new file' do
+    before do
+
+    end
+
+    specify 'that' do
+      yaml = I27r::YamlDocument.new
+      yaml['ja', 'hoge', 'fuga'] = 'piyo'
+      yaml['ja', 'hoge', 'foo'] = 'bar'
+      puts yaml
     end
   end
 end
-

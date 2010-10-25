@@ -26,11 +26,12 @@ begin
   require 'jeweler'
   Jeweler::Tasks.new do |gemspec|
     gemspec.name = 'i18n_generators'
-    gemspec.summary = 'Generates I18n locale files for Rails 2.2 and 2.3'
-    gemspec.description = 'A Rails generator plugin & gem that generates Rails 2.2 and 2.3 I18n locale files for almost every known locale.'
+    gemspec.summary = 'Generates I18n locale files for Rails 3 and Rails 2'
+    gemspec.description = 'A Rails generator plugin & gem that generates Rails I18n locale files for almost every known locale.'
     gemspec.email = 'ronnie@dio.jp'
     gemspec.homepage = 'http://github.com/amatsuda/i18n_generators/'
     gemspec.authors = ['Akira Matsuda']
+    gemspec.add_dependency 'yaml_waml'
   end
   Jeweler::GemcutterTasks.new
 rescue LoadError

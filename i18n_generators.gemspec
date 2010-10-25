@@ -5,12 +5,12 @@
 
 Gem::Specification.new do |s|
   s.name = %q{i18n_generators}
-  s.version = "0.8.1"
+  s.version = "1.0.0.pre1"
 
-  s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
+  s.required_rubygems_version = Gem::Requirement.new("> 1.3.1") if s.respond_to? :required_rubygems_version=
   s.authors = ["Akira Matsuda"]
-  s.date = %q{2010-10-23}
-  s.description = %q{A Rails generator plugin & gem that generates Rails 2.2 and 2.3 I18n locale files for almost every known locale.}
+  s.date = %q{2010-10-25}
+  s.description = %q{A Rails generator plugin & gem that generates Rails I18n locale files for almost every known locale.}
   s.email = %q{ronnie@dio.jp}
   s.extra_rdoc_files = [
     "README.rdoc"
@@ -51,6 +51,14 @@ Gem::Specification.new do |s|
      "generators/i18n_translation/lib/through_ryoku.rb",
      "generators/i18n_translation/lib/translator.rb",
      "i18n_generators.gemspec",
+     "lib/generators/i18n/USAGE",
+     "lib/generators/i18n/i18n_generator.rb",
+     "lib/generators/i18n_locale/USAGE",
+     "lib/generators/i18n_locale/i18n_locale_generator.rb",
+     "lib/generators/i18n_translation/USAGE",
+     "lib/generators/i18n_translation/i18n_translation_generator.rb",
+     "lib/generators/i18n_translation/lib/translator.rb",
+     "lib/generators/i18n_translation/lib/yaml.rb",
      "spec/cldr_spec.rb",
      "spec/data/cldr/ja.html",
      "spec/data/yml/active_record/en-US.yml",
@@ -64,7 +72,7 @@ Gem::Specification.new do |s|
   s.rdoc_options = ["--charset=UTF-8"]
   s.require_paths = ["lib"]
   s.rubygems_version = %q{1.3.7}
-  s.summary = %q{Generates I18n locale files for Rails 2.2 and 2.3}
+  s.summary = %q{Generates I18n locale files for Rails 3 and Rails 2}
   s.test_files = [
     "spec/cldr_spec.rb",
      "spec/i18n_locale_command_spec.rb",
@@ -79,9 +87,12 @@ Gem::Specification.new do |s|
     s.specification_version = 3
 
     if Gem::Version.new(Gem::VERSION) >= Gem::Version.new('1.2.0') then
+      s.add_runtime_dependency(%q<yaml_waml>, [">= 0"])
     else
+      s.add_dependency(%q<yaml_waml>, [">= 0"])
     end
   else
+    s.add_dependency(%q<yaml_waml>, [">= 0"])
   end
 end
 

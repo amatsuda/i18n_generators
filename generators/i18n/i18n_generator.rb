@@ -82,4 +82,3 @@ end
 require File.join(File.dirname(__FILE__), '../i18n_locale/i18n_locale_command')
 require File.join(File.dirname(__FILE__), '../i18n_translation/i18n_translation_command')
 Rails::Generator::Commands::Create.send :include, I18nGenerator::Generator::Commands::Create
-

@@ -6,4 +6,3 @@ class I18nTranslationGenerator < I18nGenerator
     options[:generate_translation_only] = true
   end
 end
-

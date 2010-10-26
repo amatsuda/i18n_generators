@@ -122,4 +122,3 @@ module I18nGenerator::Generator
     end
   end
 end
-

@@ -25,4 +25,3 @@ module I18nTranslationGeneratorModule
     end
   end
 end
-

@@ -13,4 +13,3 @@ module I18nTranslationGeneratorModule
     alias :t :translate
   end
 end
-

@@ -6,4 +6,3 @@ class I18nLocaleGenerator < I18nGenerator
     options[:generate_locale_only] = true
   end
 end
-

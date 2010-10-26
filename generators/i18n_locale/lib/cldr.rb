@@ -136,4 +136,3 @@ module I18nLocaleGeneratorModule
     end
   end
 end
-

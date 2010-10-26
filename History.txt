@@ -2,6 +2,8 @@
 
 * major enhancements:
   * Rails 3
+* enhancements:
+  * Fixing deprectaed syntax {{error}} with %{error} for i18n_scaffold (moro)
 
 == 0.8.1
 

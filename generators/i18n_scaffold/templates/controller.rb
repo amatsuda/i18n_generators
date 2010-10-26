@@ -44,7 +44,7 @@ class <%= controller_class_name %>Controller < ApplicationController
 
     respond_to do |format|
       if @<%= file_name %>.save
-        flash[:notice] = I18n.t(:created_success, :default => '{{model}} was successfully created.', :model => <%= class_name %>.human_name, :scope => [:railties, :scaffold])
+        flash[:notice] = I18n.t(:created_success, :default => '%{model} was successfully created.', :model => <%= class_name %>.human_name, :scope => [:railties, :scaffold])
         format.html { redirect_to(@<%= file_name %>) }
         format.xml  { render :xml => @<%= file_name %>, :status => :created, :location => @<%= file_name %> }
       else
@@ -61,7 +61,7 @@ class <%= controller_class_name %>Controller < ApplicationController
 
     respond_to do |format|
       if @<%= file_name %>.update_attributes(params[:<%= file_name %>])
-        flash[:notice] = I18n.t(:updated_success, :default => '{{model}} was successfully updated.', :model => <%= class_name %>.human_name, :scope => [:railties, :scaffold])
+        flash[:notice] = I18n.t(:updated_success, :default => '%{model} was successfully updated.', :model => <%= class_name %>.human_name, :scope => [:railties, :scaffold])
         format.html { redirect_to(@<%= file_name %>) }
         format.xml  { head :ok }
       else

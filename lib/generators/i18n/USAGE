@@ -1,5 +1,5 @@
 Description:
-    Generates a config file and locale files and a model/attributes translation file for Rails i18n feature.
+    Generates a config file and locale files and a model/attributes translation file for Rails 3.x i18n.
     In other words, executes i18n_locale and i18n_translation at once.
 
 Example:

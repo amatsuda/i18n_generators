@@ -1,5 +1,5 @@
 Description:
-    Generates a model/attributes translation file for Rails i18n feature.
+    Generates a model/attributes translation file for Rails 3.x i18n.
 
 Example:
     % rails g i18n locale_name (ja, pt-BR, etc.)

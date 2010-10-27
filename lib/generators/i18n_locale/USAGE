@@ -1,5 +1,5 @@
 Description:
-    Generates a config file and locale files for Rails i18n feature.
+    Generates a config file and locale files for Rails 3.x i18n.
 
 Example:
     % rails g i18n locale_name (ja, pt-BR, etc.)

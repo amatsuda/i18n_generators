@@ -1,8 +1,8 @@
 Description:
-    Generates a model/attributes translation file for Rails i18n feature.
+    Generates a model/attributes translation file for Rails 2.x i18n.
 
 Example:
-    ./script/generate i18n locale_name (ja-JP, de-AT, etc.)
+    ./script/generate i18n locale_name (ja, de-AT, etc.)
 
     This will create:
-        lib/locale/models_ja-JP.yml
+        config/locales/translation_ja.yml

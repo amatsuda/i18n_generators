@@ -5,11 +5,11 @@
 
 Gem::Specification.new do |s|
   s.name = %q{i18n_generators}
-  s.version = "1.0.0.pre1"
+  s.version = "1.0.0"
 
-  s.required_rubygems_version = Gem::Requirement.new("> 1.3.1") if s.respond_to? :required_rubygems_version=
+  s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Akira Matsuda"]
-  s.date = %q{2010-10-27}
+  s.date = %q{2010-10-29}
   s.description = %q{A Rails generator plugin & gem that generates Rails I18n locale files for almost every known locale.}
   s.email = %q{ronnie@dio.jp}
   s.extra_rdoc_files = [

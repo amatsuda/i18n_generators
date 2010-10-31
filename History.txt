@@ -1,3 +1,8 @@
+== 1.0.1
+
+* major enhancements:
+  * Bundle yaml_waml.rb to avoid depending on yaml_waml gem (thanks to kakutani-san!)
+
 == 1.0.0
 
 * major enhancements:

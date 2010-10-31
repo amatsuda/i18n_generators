@@ -31,7 +31,6 @@ begin
     gemspec.email = 'ronnie@dio.jp'
     gemspec.homepage = 'http://github.com/amatsuda/i18n_generators/'
     gemspec.authors = ['Akira Matsuda']
-    gemspec.add_dependency 'yaml_waml'
   end
   Jeweler::GemcutterTasks.new
 rescue LoadError

@@ -1,4 +1,4 @@
-require 'yaml_waml'
+require File.join(File.dirname(__FILE__), 'yaml_waml')
 
 module I27r
   class Line

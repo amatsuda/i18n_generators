@@ -25,7 +25,9 @@ class I18nTranslationGenerator < Rails::Generators::NamedBase
       end
     end
 
-    create_file "config/locales/translation_#{locale_name}.yml", yaml.to_s(true)
+    unless (yaml_string = yaml.to_s(true)).blank?
+      create_file "config/locales/translation_#{locale_name}.yml", yaml_string
+    end
   end
 
   private

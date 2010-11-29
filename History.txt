@@ -1,3 +1,8 @@
+== 1.0.2
+
+* bugfixes:
+  * Use https to request GH
+
 == 1.0.1
 
 * major enhancements:

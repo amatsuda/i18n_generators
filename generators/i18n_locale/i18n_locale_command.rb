@@ -1,3 +1,4 @@
+require 'net/https'
 require 'rubygems'
 require 'rails_generator'
 require 'rails_generator/commands'
@@ -26,7 +27,13 @@ module I18nGenerator::Generator
 
       def fetch_from_rails_i18n_repository
         file('i18n:base.yml', "config/locales/#{locale_name}.yml") do |f|
-          OpenURI.open_uri("http://github.com/svenfuchs/rails-i18n/raw/master/rails/locale/#{locale_name}.yml").read
+          uri = URI.parse "https://github.com/svenfuchs/rails-i18n/raw/master/rails/locale/#{locale_name}.yml"
+          http = Net::HTTP.new uri.host, uri.port
+          http.use_ssl = true
+          http.verify_mode = OpenSSL::SSL::VERIFY_NONE
+          req = Net::HTTP::Get.new uri.request_uri
+          res = http.request req
+          res.body
         end
       end
 

@@ -1,3 +1,8 @@
+== 1.0.3
+
+* enhancements:
+  * Some Rails-3-ish cleanups
+
 == 1.0.2
 
 * bugfixes:

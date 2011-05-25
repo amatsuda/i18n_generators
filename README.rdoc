@@ -15,7 +15,7 @@ This gem/plugin provides following generate commands.
 % rails g i18n_locale ja (de-AT, pt-BR, etc.)
 
 Downloads the .yml file for the specified locale from the official rails-i18n repository:
-    http://github.com/svenfuchs/rails-i18n/tree/master/rails/locale
+    https://github.com/svenfuchs/rails-i18n/tree/master/rails/locale
 
 Then the generater sets the application default locale to the specified locale.
 
@@ -56,11 +56,11 @@ Executes 1 and 2 at once.
 
 * With Bundler
 
-Add 'i18n_generators' to your Gemfile, then `bundle`.
+Add 'i18n_generators' to your Gemfile, then `bundle`. Restricting the group to :development would be a good idea, since the generator would probably be used only in development mode.
 
 * As a Rails plugin
 
 % rails plugin install git://github.com/amatsuda/i18n_generators.git
 
 
-Copyright (c) 2008 - 2010 Akira Matsuda, released under the MIT license
+Copyright (c) 2008 - 2011 Akira Matsuda, released under the MIT license

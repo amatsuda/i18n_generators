@@ -35,15 +35,7 @@ class I18nLocaleGenerator < Rails::Generators::NamedBase
   def fetch_from_rails_i18n_repository
     log "fetching #{locale_name}.yml from rails-i18n repository..."
     begin
-      uri = URI.parse "https://github.com/svenfuchs/rails-i18n/raw/master/rails/locale/#{locale_name}.yml"
-      http = Net::HTTP.new uri.host, uri.port
-      http.use_ssl = true
-      http.verify_mode = OpenSSL::SSL::VERIFY_NONE
-      req = Net::HTTP::Get.new uri.request_uri
-      res = http.request req
-      raise unless res.code == '200'
-
-      create_file "config/locales/#{locale_name}.yml", res.body
+      get "https://github.com/svenfuchs/rails-i18n/raw/master/rails/locale/#{locale_name}.yml", "config/locales/#{locale_name}.yml"
     rescue
       log "could not find #{locale_name}.yml on rails-i18n repository"
     end

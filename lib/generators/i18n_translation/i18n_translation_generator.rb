@@ -10,6 +10,7 @@ class I18nTranslationGenerator < Rails::Generators::NamedBase
     end
     log "translating models to #{locale_name}..."
     I18n.locale = locale_name
+    Rails.application.eager_load!
 
     keys = aggregate_keys
     translations = translate_all(keys)
@@ -32,23 +33,21 @@ class I18nTranslationGenerator < Rails::Generators::NamedBase
 
   private
   def aggregate_keys
-    models = model_filenames.map do |model_name|
-      model = begin
-        m = model_name.camelize.constantize rescue LoadError
-        next if m.nil? || !m.table_exists? || !m.respond_to?(:content_columns)
-        m.class_eval %Q[def self._english_name; "#{model_name}"; end]
-        m
-      rescue
+    models = ActiveRecord::Base.descendants.map do |m|
+      begin
+        m if m.table_exists? && m.respond_to?(:content_columns)
+      rescue => e
+        p e
         next
       end
     end.compact
 
     translation_keys = []
-    translation_keys += models.map {|m| "activerecord.models.#{m._english_name}"}
+    translation_keys += models.map {|m| "activerecord.models.#{m.model_name.underscore}"}
     models.each do |model|
       cols = model.content_columns + model.reflect_on_all_associations
       cols.delete_if {|c| %w[created_at updated_at].include? c.name} unless include_timestamps?
-      translation_keys += cols.map {|c| "activerecord.attributes.#{model._english_name}.#{c.name}"}
+      translation_keys += cols.map {|c| "activerecord.attributes.#{model.model_name.underscore}.#{c.name}"}
     end
     translation_keys
   end
@@ -92,12 +91,6 @@ class I18nTranslationGenerator < Rails::Generators::NamedBase
 
   def include_timestamps?
     !!@include_timestamps
-  end
-
-  def model_filenames
-    Dir.chdir("#{Rails.root}/app/models/") do
-      Dir["**/*.rb"].map {|m| m.sub(/\.rb$/, '')}
-    end
   end
 
   # iterate through all values

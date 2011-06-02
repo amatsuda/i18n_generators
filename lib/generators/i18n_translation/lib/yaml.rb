@@ -1,4 +1,8 @@
-require File.join(File.dirname(__FILE__), 'yaml_waml')
+begin
+  require 'psych'
+rescue LoadError
+  require File.join(File.dirname(__FILE__), 'yaml_waml')
+end
 
 module I27r
   class Line
@@ -44,7 +48,7 @@ module I27r
 
     private
     def generate_text(indent)
-      @text = indent + @yaml.to_yaml.sub("--- \n", '').chomp.rstrip
+      @text = indent + @yaml.to_yaml.sub(/--- ?\n/, '').chomp.rstrip
     end
   end
 

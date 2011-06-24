@@ -1,5 +1,8 @@
 == 1.0.3
 
+* bugfixes:
+  * Translation generator recursive loop in ruby 1.9 + MS-Windows (memarko)
+
 * enhancements:
   * Some Rails-3-ish cleanups
 

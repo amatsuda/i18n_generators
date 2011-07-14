@@ -1,5 +1,6 @@
 begin
   require 'psych'
+  YAML::ENGINE.yamler = "psych"
 rescue LoadError
   require File.join(File.dirname(__FILE__), 'yaml_waml')
 end

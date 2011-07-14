@@ -1,6 +1,8 @@
 require File.join(File.dirname(__FILE__), 'lib/yaml')
 require File.join(File.dirname(__FILE__), 'lib/translator')
 
+#YAML::ENGINE.yamler = "psych"
+
 class I18nTranslationGenerator < Rails::Generators::NamedBase
   # option: include_timestamps
   def main
@@ -18,10 +20,10 @@ class I18nTranslationGenerator < Rails::Generators::NamedBase
     yaml = I27r::YamlDocument.load_yml_file "config/locales/translation_#{locale_name}.yml"
     each_value [], translations do |parents, value|
       if value.is_a? String
-        yaml[[locale_name.to_s] + parents] = value
+        yaml[[locale_name.to_s] + parents] = CGI.unescapeHTML(value)
       else
         value.each do |key, val|
-          yaml[[locale_name.to_s] + parents + [key]] = val
+          yaml[[locale_name.to_s] + parents + [key]] = CGI.unescapeHTML(val)
         end
       end
     end

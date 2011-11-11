@@ -34,7 +34,7 @@ module I27r
   end
 
   class Translator
-    include GoogleTranslate
+    include BabelFish
 
     def initialize(lang)
       @lang, @cache = lang, {}

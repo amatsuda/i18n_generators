@@ -1,3 +1,8 @@
+== 1.1.0
+
+* enhancements:
+  * New translation engine (see: http://googlecode.blogspot.com/2011/05/spring-cleaning-for-some-of-our-apis.html) (thanks to agilekawabata-san!)
+
 == 1.0.3
 
 * bugfixes:

@@ -21,4 +21,6 @@ Gem::Specification.new do |s|
 
   s.extra_rdoc_files = ['README.rdoc']
   s.licenses = ['MIT']
+
+  s.add_runtime_dependency 'mechanize'
 end

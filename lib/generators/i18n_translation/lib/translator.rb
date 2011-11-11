@@ -21,6 +21,18 @@ module I27r
     end
   end
 
+  module BabelFish
+    def _translate(word, lang)
+      require 'mechanize'
+      w = CGI.escape ActiveSupport::Inflector.humanize(word)
+
+      agent = Mechanize.new
+      url = "http://babelfish.yahoo.com/translate_txt?lp=en_#{lang}&trtext=#{w}"
+      page = agent.get(url)
+      page.search('#result div').text
+    end
+  end
+
   class Translator
     include GoogleTranslate
 

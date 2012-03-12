@@ -32,8 +32,8 @@ class I18nTranslationGenerator < Rails::Generators::NamedBase
   end
 
   private
-  def aggregate_keys
-    models = ActiveRecord::Base.descendants.map do |m|
+  def models
+    @models ||= ActiveRecord::Base.descendants.map do |m|
       begin
         m if m.table_exists? && m.respond_to?(:content_columns)
       rescue => e
@@ -41,7 +41,9 @@ class I18nTranslationGenerator < Rails::Generators::NamedBase
         next
       end
     end.compact
+  end
 
+  def aggregate_keys
     translation_keys = []
     translation_keys += models.map {|m| "activerecord.models.#{m.model_name.underscore}"}
     models.each do |model|

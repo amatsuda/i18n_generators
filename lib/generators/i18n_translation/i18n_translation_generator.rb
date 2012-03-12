@@ -54,10 +54,12 @@ class I18nTranslationGenerator < Rails::Generators::NamedBase
     translation_keys
   end
 
+  def translator
+    @translator ||= I27r::Translator.new locale_name.sub(/\-.*/, '')
+  end
+
   # receives an array of keys and returns :key => :translation hash
   def translate_all(keys)
-    translator = I27r::Translator.new locale_name.sub(/\-.*/, '')
-
     ActiveSupport::OrderedHash.new.tap do |oh|
       # fix the order first(for multi thread translating)
       keys.each do |key|

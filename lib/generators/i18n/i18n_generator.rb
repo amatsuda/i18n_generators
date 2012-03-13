@@ -1,5 +1,5 @@
-require File.join(File.dirname(__FILE__), '../i18n_translation/i18n_translation_generator')
-require File.join(File.dirname(__FILE__), '../i18n_locale/i18n_locale_generator')
+require 'generators/i18n_translation/i18n_translation_generator'
+require 'generators/i18n_locale/i18n_locale_generator'
 
 class I18nGenerator < Rails::Generators::NamedBase
   def initialize(args, *options)

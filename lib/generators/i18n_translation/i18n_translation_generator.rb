@@ -1,5 +1,5 @@
-require File.join(File.dirname(__FILE__), 'lib/yaml')
-require File.join(File.dirname(__FILE__), 'lib/translator')
+require 'generators/i18n_translation/lib/yaml'
+require 'generators/i18n_translation/lib/translator'
 
 class I18nTranslationGenerator < Rails::Generators::NamedBase
   # option: include_timestamps

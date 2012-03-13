@@ -1,7 +1,7 @@
 begin
   require 'psych'
 rescue LoadError
-  require File.join(File.dirname(__FILE__), 'yaml_waml')
+  require 'generators/i18n_translation/lib/yaml_waml'
 end
 
 module I27r

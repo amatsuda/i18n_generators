@@ -12,8 +12,9 @@ class I18nTranslationGenerator < Rails::Generators::NamedBase
     I18n.locale = locale_name
     Rails.application.eager_load!
 
-    keys = aggregate_keys
-    translations = translate_all(keys)
+    model_names_translations = order_hash translate_all(model_names_keys)
+    attribute_names_translations = order_hash translate_all(attribute_names_keys)
+    translations = model_names_translations.deep_merge attribute_names_translations
 
     yaml = I27r::YamlDocument.load_yml_file "config/locales/translation_#{locale_name}.yml"
     each_value [], translations do |parents, value|
@@ -43,15 +44,16 @@ class I18nTranslationGenerator < Rails::Generators::NamedBase
     end.compact
   end
 
-  def aggregate_keys
-    translation_keys = []
-    translation_keys += models.map {|m| "activerecord.models.#{m.model_name.underscore}"}
-    models.each do |model|
+  def model_names_keys
+    models.map {|m| "activerecord.models.#{m.model_name.underscore}"}
+  end
+
+  def attribute_names_keys
+    models.map {|model|
       cols = model.content_columns + model.reflect_on_all_associations
       cols.delete_if {|c| %w[created_at updated_at].include? c.name} unless include_timestamps?
-      translation_keys += cols.map {|c| "activerecord.attributes.#{model.model_name.underscore}.#{c.name}"}
-    end
-    translation_keys
+      cols.map {|c| "activerecord.attributes.#{model.model_name.underscore}.#{c.name}"}
+    }.flatten
   end
 
   def translator
@@ -60,33 +62,18 @@ class I18nTranslationGenerator < Rails::Generators::NamedBase
 
   # receives an array of keys and returns :key => :translation hash
   def translate_all(keys)
-    ActiveSupport::OrderedHash.new.tap do |oh|
-      # fix the order first(for multi thread translating)
-      keys.each do |key|
-        if key.to_s.include? '.'
-          key_prefix, key_suffix = key.to_s.split('.')[0...-1], key.to_s.split('.')[-1]
-          key_prefix.inject(oh) {|h, k| h[k] ||= ActiveSupport::OrderedHash.new}[key_suffix] = nil
-        else
-          oh[key] = nil
-        end
+    ret, threads = {}, []
+    keys.each do |key|
+      threads << Thread.new do
+        Rails.logger.debug "translating #{key} ..."
+        Thread.pass
+        key_prefix, key_suffix = key.to_s.split('.')[0...-1], key.to_s.split('.')[-1]
+        existing_translation = I18n.backend.send(:lookup, locale_name, key_suffix, key_prefix)
+        ret[key] = existing_translation ? existing_translation : translator.translate(key_suffix)
       end
-      threads = []
-      keys.each do |key|
-        threads << Thread.new do
-          Rails.logger.debug "translating #{key} ..."
-          Thread.pass
-          if key.to_s.include? '.'
-            key_prefix, key_suffix = key.to_s.split('.')[0...-1], key.to_s.split('.')[-1]
-            existing_translation = I18n.backend.send(:lookup, locale_name, key_suffix, key_prefix)
-            key_prefix.inject(oh) {|h, k| h[k]}[key_suffix] = existing_translation ? existing_translation : translator.translate(key_suffix)
-          else
-            existing_translation = I18n.backend.send(:lookup, locale_name, key)
-            oh[key] = existing_translation ? existing_translation : translator.translate(key)
-          end
-        end
-      end
-      threads.each {|t| t.join}
     end
+    threads.each {|t| t.join}
+    ret
   end
 
   def locale_name
@@ -95,6 +82,20 @@ class I18nTranslationGenerator < Rails::Generators::NamedBase
 
   def include_timestamps?
     !!@include_timestamps
+  end
+
+  # transform a Hash into a nested OrderedHash
+  def order_hash(hash)
+    ActiveSupport::OrderedHash.new.tap do |oh|
+      hash.sort_by {|k, _v| k}.each do |key, value|
+        if key.to_s.include? '.'
+          key_prefix, key_suffix = key.to_s.split('.')[0...-1], key.to_s.split('.')[-1]
+          key_prefix.inject(oh) {|h, k| h[k] ||= ActiveSupport::OrderedHash.new}[key_suffix] = value
+        else
+          oh[key] = value
+        end
+      end
+    end
   end
 
   # iterate through all values

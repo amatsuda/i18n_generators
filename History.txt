@@ -1,3 +1,9 @@
+== 1.2.0
+
+* enhancements:
+  * Drop Rails 2 support
+  * Put alias to model name for non-collection reflection names (see: https://twitter.com/#!/znz/status/179109337581625344) (thanks to znz-san!)
+
 == 1.1.0
 
 * enhancements:

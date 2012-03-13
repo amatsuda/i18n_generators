@@ -10,7 +10,7 @@ module I27r
     delegate :scan, :to => :@text
 
     def initialize(text, options = {})
-      @generated = !!options[:generated] || text.ends_with?('  #g')
+      @generated = !!options[:generated] || text.end_with?('  #g')
       @yaml = YAML.load text.to_s + ' '
       @text = text
     end
@@ -43,7 +43,7 @@ module I27r
     end
 
     def to_s
-      "#{@text}#{'  #g' if generated? && yaml? && !value.nil? && !@text.ends_with?('  #g')}"
+      "#{@text}#{'  #g' if generated? && yaml? && !value.nil? && !@text.end_with?('  #g')}"
     end
 
     private
@@ -127,7 +127,7 @@ module I27r
       previous_indent = ''
       ''.tap do |ret|
         @lines.each do |line|
-          ret << "\n" if add_blank_line && (line.indent < previous_indent) && !line.to_s.blank? && !ret.ends_with?("\n\n")
+          ret << "\n" if add_blank_line && (line.indent < previous_indent) && !line.to_s.blank? && !ret.end_with?("\n\n")
           previous_indent = line.indent
           ret << line.to_s << "\n"
         end

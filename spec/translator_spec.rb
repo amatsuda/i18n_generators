@@ -1,46 +1,39 @@
+# coding: utf-8
 $KCODE = 'U'
 
-require File.join(File.dirname(__FILE__), 'spec_helper')
-require File.join(File.dirname(__FILE__), '../generators/i18n_translation/lib/translator')
-include I18nTranslationGeneratorModule
+require 'spec_helper'
+require 'generators/i18n_translation/lib/translator'
 
-describe Translator do
-  before(:each) do
-    @translator = Translator.new 'ja'
-  end
+describe I27r::Translator do
+  subject { I27r::Translator.new 'ja' }
 
   describe 'when successfully translated' do
     before do
-      res_200 = mock('res_200')
-      res_200.stub!(:read).and_return('{"responseData": {"translatedText":"こんにちは"}, "responseDetails": null, "responseStatus": 200}')
-      OpenURI.stub!(:open_uri).and_return(res_200)
+      subject.stub!(:_translate).and_return('こんにちは')
     end
 
     it 'returns translated text' do
-      @translator.translate('hello').should == 'こんにちは'
+      subject.translate('hello').should == 'こんにちは'
     end
   end
 
   describe 'when translation failed with error code' do
     before do
-      res_500 = mock('res_500')
-      res_500.stub!(:read).and_return('{"responseData": {"translatedText":"こんにちは？"}, "responseDetails": null, "responseStatus": 500}')
-      OpenURI.stub!(:open_uri).and_return(res_500)
+      subject.stub!(:_translate).and_return('')
     end
 
     it 'returns the original text' do
-      @translator.translate('hello').should == 'hello'
+      subject.translate('hello').should == 'hello'
     end
   end
 
   describe 'when translation raised an error' do
     before do
-      OpenURI.stub!(:open_uri).and_raise('ERROR!')
+      subject.stub!(:_translate).and_raise('ERROR!')
     end
 
     it 'returns the original text' do
-      @translator.translate('hello').should == 'hello'
+      subject.translate('hello').should == 'hello'
     end
   end
 end
-

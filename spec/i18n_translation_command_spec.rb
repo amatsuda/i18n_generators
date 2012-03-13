@@ -1,11 +1,8 @@
-require File.join(File.dirname(__FILE__), 'spec_helper')
-require File.join(File.dirname(__FILE__), '/../generators/i18n_translation/i18n_translation_command')
+require 'spec_helper'
+require 'generators/i18n_translation/i18n_translation_generator'
 
-describe I18nGenerator::Generator::Commands::Create do
-  before do
-    (@command = Object.new).extend I18nGenerator::Generator::Commands::Create
-    @command.stub!(:locale_name).and_return('ja')
-  end
+describe I18nTranslationGenerator do
+  subject { I18nTranslationGenerator.new(['ja']) }
 
   describe 'each_value' do
     it 'iterates through each value' do
@@ -15,10 +12,9 @@ describe I18nGenerator::Generator::Commands::Create do
       hash[:parent2] = ActiveSupport::OrderedHash.new
       hash[:parent2][:child2] = 'child two'
       hash[:parent2][:child3] = 'child three'
-      @command.__send__(:each_value, [], hash) do |parents, value|
+      subject.send(:each_value, [], hash) do |parents, value|
         p "#{parents.join('.')} #{value}"
       end
     end
   end
 end
-

@@ -1,5 +1,6 @@
-require File.join(File.dirname(__FILE__), 'spec_helper')
-require File.join(File.dirname(__FILE__), '../lib/generators/i18n_translation/lib/yaml')
+# coding: utf-8
+require 'spec_helper'
+require 'generators/i18n_translation/lib/yaml'
 
 describe I27r::YamlDocument do
   context 'when loading an existing file' do
@@ -68,7 +69,7 @@ ja:
     numbers:
       one: "いち"  #g
       two: "に"
-      three: "さん"  #g
+      three: さん  #g
 
     aaa:
       foo: "ふー"

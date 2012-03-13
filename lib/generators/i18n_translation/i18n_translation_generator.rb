@@ -12,13 +12,20 @@ class I18nTranslationGenerator < Rails::Generators::NamedBase
     I18n.locale = locale_name
     Rails.application.eager_load!
 
+    # activerecord:models comes first
     model_names_translations = order_hash translate_all(model_names_keys)
-    attribute_names_translations = order_hash translate_all(attribute_names_keys)
-    translations = model_names_translations.deep_merge attribute_names_translations
+    # activerecord:models:attributes comes next
+    attribute_names_translations = ActiveSupport::OrderedHash.new
+    attribute_names_translations.merge! translate_all(content_column_names_keys)
+    attribute_names_translations.merge! translate_all(collection_reflection_names_keys)
+    # refer to already translated model names
+    attribute_names_translations.merge! singular_reflection_names_references
+    # merge them all
+    translations = model_names_translations.deep_merge order_hash(attribute_names_translations)
 
     yaml = I27r::YamlDocument.load_yml_file "config/locales/translation_#{locale_name}.yml"
     each_value [], translations do |parents, value|
-      if value.is_a? String
+      if value.is_a?(String) || value.is_a?(Symbol)
         yaml[[locale_name.to_s] + parents] = value
       else
         value.each do |key, val|
@@ -48,11 +55,27 @@ class I18nTranslationGenerator < Rails::Generators::NamedBase
     models.map {|m| "activerecord.models.#{m.model_name.underscore}"}
   end
 
-  def attribute_names_keys
-    models.map {|model|
-      cols = model.content_columns + model.reflect_on_all_associations
-      cols.delete_if {|c| %w[created_at updated_at].include? c.name} unless include_timestamps?
-      cols.map {|c| "activerecord.attributes.#{model.model_name.underscore}.#{c.name}"}
+  def content_column_names_keys
+    models.map {|m|
+      cols = m.content_columns.map {|c| c.name}
+      cols.delete_if {|c| %w[created_at updated_at].include? c} unless include_timestamps?
+      cols.map {|c| "activerecord.attributes.#{m.model_name.underscore}.#{c}"}
+    }.flatten
+  end
+
+  def singular_reflection_names_references
+    ret = {}
+    models.each do |m|
+      m.reflect_on_all_associations.select {|c| !c.collection?}.each do |c|
+        ret["activerecord.attributes.#{m.model_name.underscore}.#{c.name}"] = "activerecord.models.#{c.name}".to_sym
+      end
+    end
+    ret
+  end
+
+  def collection_reflection_names_keys
+    models.map {|m|
+      m.reflect_on_all_associations.select {|c| c.collection?}.map {|c| "activerecord.attributes.#{m.model_name.underscore}.#{c.name}"}
     }.flatten
   end
 

@@ -83,12 +83,12 @@ YAML
         subject { @yaml['ja', 'aho', 'hage'] }
         it { should == 'hige' }
       end
-
     end
   end
 
   context 'when loading an existing file with alias' do
     before do
+      pending
       @yaml_string = <<YAML
 ja:
   activerecord:

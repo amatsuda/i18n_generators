@@ -41,7 +41,9 @@ class I18nTranslationGenerator < Rails::Generators::NamedBase
 
   private
   def models
-    @models ||= ActiveRecord::Base.descendants.map do |m|
+    ar_descendants = ActiveRecord::Base.descendants
+    ar_descendants.delete(ActiveRecord::SchemaMigration) if defined?(ActiveRecord::SchemaMigration)
+    @models ||= ar_descendants.map do |m|
       begin
         m if m.table_exists? && m.respond_to?(:content_columns)
       rescue => e

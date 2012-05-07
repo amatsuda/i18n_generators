@@ -1,3 +1,8 @@
+== 1.2.1
+
+* bugfixes:
+  * Rails 4 ready
+
 == 1.2.0
 
 * enhancements:

@@ -52,14 +52,14 @@ class I18nTranslationGenerator < Rails::Generators::NamedBase
   end
 
   def model_names_keys
-    models.map {|m| "activerecord.models.#{m.model_name.underscore}"}
+    models.map {|m| "activerecord.models.#{m.model_name.to_s.underscore}"}
   end
 
   def content_column_names_keys
     models.map {|m|
       cols = m.content_columns.map {|c| c.name}
       cols.delete_if {|c| %w[created_at updated_at].include? c} unless include_timestamps?
-      cols.map {|c| "activerecord.attributes.#{m.model_name.underscore}.#{c}"}
+      cols.map {|c| "activerecord.attributes.#{m.model_name.to_s.underscore}.#{c}"}
     }.flatten
   end
 
@@ -67,7 +67,7 @@ class I18nTranslationGenerator < Rails::Generators::NamedBase
     ret = {}
     models.each do |m|
       m.reflect_on_all_associations.select {|c| !c.collection?}.each do |c|
-        ret["activerecord.attributes.#{m.model_name.underscore}.#{c.name}"] = "activerecord.models.#{c.name}".to_sym
+        ret["activerecord.attributes.#{m.model_name.to_s.underscore}.#{c.name}"] = "activerecord.models.#{c.name}".to_sym
       end
     end
     ret
@@ -75,7 +75,7 @@ class I18nTranslationGenerator < Rails::Generators::NamedBase
 
   def collection_reflection_names_keys
     models.map {|m|
-      m.reflect_on_all_associations.select {|c| c.collection?}.map {|c| "activerecord.attributes.#{m.model_name.underscore}.#{c.name}"}
+      m.reflect_on_all_associations.select {|c| c.collection?}.map {|c| "activerecord.attributes.#{m.model_name.to_s.underscore}.#{c.name}"}
     }.flatten
   end
 

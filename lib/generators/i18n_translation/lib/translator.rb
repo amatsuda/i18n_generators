@@ -33,8 +33,30 @@ module I27r
     end
   end
 
+  module BingTranslator
+    def _translate(word, lang)
+      require 'cgi'
+
+      w = CGI.escape ActiveSupport::Inflector.humanize(word)
+      json = OpenURI.open_uri("http://api.microsofttranslator.com/v2/ajax.svc/TranslateArray?appId=%22T5y_QKkSEGi7P462fd0EwjEhB0_XGUl8PNTgQylxBYks*%22&texts=[%22#{w}%22]&from=%22en%22&to=%22#{lang}%22").read.gsub(/\A([^\[]+)/, '')
+
+      result = if RUBY_VERSION >= '1.9'
+        require 'json'
+        ::JSON.parse json
+      else
+        ActiveSupport::JSON.decode(json)
+      end
+
+      if result.any?
+        result[0]['TranslatedText']
+      else
+        raise TranslationError.new result.inspect
+      end
+    end
+  end
+
   class Translator
-    include BabelFish
+    include BingTranslator
 
     def initialize(lang)
       @lang, @cache = lang, {}

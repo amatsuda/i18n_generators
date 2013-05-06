@@ -37,8 +37,10 @@ module I27r
     def _translate(word, lang)
       require 'cgi'
 
+      @app_id ||= OpenURI.open_uri('http://www.bing.com/translator').read[/Default\.Constants\.RTTAppID = '(.+)'/, 1]
+
       w = CGI.escape ActiveSupport::Inflector.humanize(word)
-      json = OpenURI.open_uri("http://api.microsofttranslator.com/v2/ajax.svc/TranslateArray?appId=%22T5y_QKkSEGi7P462fd0EwjEhB0_XGUl8PNTgQylxBYks*%22&texts=[%22#{w}%22]&from=%22en%22&to=%22#{lang}%22").read.gsub(/\A([^\[]+)/, '')
+      json = OpenURI.open_uri("http://api.microsofttranslator.com/v2/ajax.svc/TranslateArray2?appId=%22#{@app_id}%22&texts=[%22#{w}%22]&from=%22en%22&to=%22#{lang}%22").read.gsub(/\A([^\[]+)/, '')
 
       result = if RUBY_VERSION >= '1.9'
         require 'json'

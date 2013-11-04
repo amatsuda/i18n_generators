@@ -17,7 +17,7 @@ This gem/plugin provides following generate commands.
 Downloads the .yml file for the specified locale from the official rails-i18n repository:
     https://github.com/svenfuchs/rails-i18n/tree/master/rails/locale
 
-Then the generater sets the application default locale to the specified locale.
+Then the generator sets the application default locale to the specified locale.
 
 This will generate following locale file.
 

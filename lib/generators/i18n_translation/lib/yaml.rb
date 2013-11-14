@@ -60,7 +60,7 @@ module I27r
     end
 
     def self.load_yml_file(yml_path)
-      if File.exists? yml_path
+      if File.exist? yml_path
         self.new File.read(yml_path)
       else
         self.new

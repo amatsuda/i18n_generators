@@ -12,7 +12,7 @@ This gem/plugin provides following generate commands.
 
 === 1. Generate Locale Files for ActiveRecord/ActiveSupport/ActionPack
 
-% rails g i18n_locale ja (de-AT, pt-BR, etc.)
+    % rails g i18n_locale ja (de-AT, pt-BR, etc.)
 
 Downloads the .yml file for the specified locale from the official rails-i18n repository:
     https://github.com/svenfuchs/rails-i18n/tree/master/rails/locale
@@ -25,7 +25,7 @@ This will generate following locale file.
 
 === 2. Generate Translation YAML File For All Models/Attributes
 
-% rails g i18n_translation ja (de-AT, pt-BR, etc.)
+    % rails g i18n_translation ja (de-AT, pt-BR, etc.)
 
 This will generate following YAML file.
 

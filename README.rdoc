@@ -37,7 +37,7 @@ The generator doesn't overwrite the existing value so that you can rerun the gen
 
 === 3. Generate All
 
-% rails g i18n ja (de-AT, pt-BR, etc.)
+    % rails g i18n ja (de-AT, pt-BR, etc.)
 
 Executes 1 and 2 at once.
 

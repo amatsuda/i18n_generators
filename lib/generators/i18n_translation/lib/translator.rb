@@ -4,24 +4,6 @@ module I27r
   module GoogleTranslate
     def _translate(word, lang)
       w = CGI.escape ActiveSupport::Inflector.humanize(word)
-      json = OpenURI.open_uri("http://ajax.googleapis.com/ajax/services/language/translate?v=1.0&q=#{w}&langpair=en%7C#{lang}").read
-      result = if RUBY_VERSION >= '1.9'
-        require 'json'
-        ::JSON.parse json
-      else
-        ActiveSupport::JSON.decode(json)
-      end
-      if result['responseStatus'] == 200
-        result['responseData']['translatedText']
-      else
-        raise TranslationError.new result.inspect
-      end
-    end
-  end
-
-  module GoogleTranslate2
-    def _translate(word, lang)
-      w = CGI.escape ActiveSupport::Inflector.humanize(word)
       text = Net::HTTP.get URI("https://translate.google.com/translate_a/single?client=t&sl=en&tl=#{lang}&dt=t&q=#{w}")
       text.scan(/"(.*?)"/).first.first.tap {|t| t.force_encoding(Encoding::UTF_8) if t.respond_to? :force_encoding}
     end
@@ -63,7 +45,8 @@ module I27r
   end
 
   class Translator
-    include GoogleTranslate2
+    include GoogleTranslate
+
     def initialize(lang)
       @lang, @cache = lang, {}
     end

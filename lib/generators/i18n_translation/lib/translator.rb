@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 module I27r
   class TranslationError < StandardError; end
 

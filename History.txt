@@ -7,17 +7,17 @@
 
 * enhancements:
   * Drop Rails 2 support
-  * Put alias to model name for non-collection reflection names (see: https://twitter.com/#!/znz/status/179109337581625344) (thanks to znz-san!)
+  * Put alias to model name for non-collection reflection names (see: https://twitter.com/#!/znz/status/179109337581625344)  (thanks to znz)
 
 == 1.1.0
 
 * enhancements:
-  * New translation engine (see: http://googlecode.blogspot.com/2011/05/spring-cleaning-for-some-of-our-apis.html) (thanks to agilekawabata-san!)
+  * New translation engine (see: http://googlecode.blogspot.com/2011/05/spring-cleaning-for-some-of-our-apis.html)  (thanks to agilekawabata)
 
 == 1.0.3
 
 * bugfixes:
-  * #4 Translation generator recursive loop in ruby 1.9 + MS-Windows (memarko)
+  * #4 Translation generator recursive loop in ruby 1.9 + MS-Windows  (memarko)
 
 * enhancements:
   * Some Rails-3-ish cleanups
@@ -30,19 +30,19 @@
 == 1.0.1
 
 * major enhancements:
-  * Bundle yaml_waml.rb to avoid depending on yaml_waml gem (thanks to kakutani-san!)
+  * Bundle yaml_waml.rb to avoid depending on yaml_waml gem  (thanks to kakutani)
 
 == 1.0.0
 
 * major enhancements:
   * Rails 3
 * enhancements:
-  * Fixing deprectaed syntax {{error}} with %{error} for i18n_scaffold (moro)
+  * Fixing deprectaed syntax {{error}} with %{error} for i18n_scaffold  (moro)
 
 == 0.8.1
 
 * bugfixes:
-  * Fix for pluralized translations (scambra)
+  * Fix for pluralized translations  (scambra)
 
 == 0.8.0
 
@@ -63,9 +63,9 @@
   * Could not load cldr data with short locale names
 * major enhancements:
   * Include AR association names in model attributes translation
-  * Add 'generated' comment mark (#g) for generated lines in YAML (thanks to t-wada-senpai, Shimura-san, Toyofuku-san, Sezutsu-san and oukayuka-san!)
+  * Add 'generated' comment mark (#g) for generated lines in YAML  (thanks to t-wada-senpai, Shimura-san, Toyofuku-san, Sezutsu-san and oukayuka)
   * Add --include-timestamps option and change default bahaviour not to include timestamp columns in translation YAML
-  * Add blank line between each blocks (thanks to Sawayanagi-san!)
+  * Add blank line between each blocks  (thanks to Sawayanagi)
 * enhancements:
   * Avoid generating blank locale file
   * Change GitHub fetch URL from blob/master/...?raw=true to raw/master
@@ -83,12 +83,12 @@
 == 0.4.1
 
 * bugfixes:
-  * i18n_translation abnormally ends when loading a view containing "-%>" (thanks to babie-san!)
+  * i18n_translation abnormally ends when loading a view containing "-%>"  (thanks to babie)
 
 == 0.4.0
 
 * major enhancements:
-  * translation generator now preserves any existing extra lines in the YAML file (thanks to Iain Hecker-san!)
+  * translation generator now preserves any existing extra lines in the YAML file  (thanks to Iain Hecker)
 
 == 0.3.4
 
@@ -98,12 +98,12 @@
 == 0.3.3
 
 * bugfixes:
-  * Did not work on Ruby 1.8.6 (thanks to akm-san!)
+  * Did not work on Ruby 1.8.6  (thanks to akm)
 
 == 0.3.2
 
 * bugfixes:
-  * Trim mode in ERB didn't work on some platforms (thanks to valda-san!)
+  * Trim mode in ERB didn't work on some platforms  (thanks to valda)
 
 == 0.3.1
 
@@ -117,15 +117,15 @@
   * Renamed the generators
       i18n_locales -> i18n_locale (i18n --locale)
       i18n_models -> i18n_translation (i18n --translation)
-  * Handle all translate keys which appear in view files (thanks to PanosJee-san!)
+  * Handle all translate keys which appear in view files  (thanks to PanosJee)
 
 == 0.2.0
 
 * major enhancements:
-  * Implemented i18n_scaffold generator (thanks to Iain Hecker-san!)
+  * Implemented i18n_scaffold generator  (thanks to Iain Hecker)
 
 * enhancements:
-  * i18n_models generator can now deal with non AR classes which has content_columns (thanks to Iain Hecker-san!)
+  * i18n_models generator can now deal with non AR classes which has content_columns  (thanks to Iain Hecker)
 
 == 0.1.0
 
@@ -133,7 +133,7 @@
   * Fetch locale YAML file from rails-i18n project repository first
 
 * bugfixes:
-  * Could not recognize model names with multipie words (thanks to makoto-san!)
+  * Could not recognize model names with multipie words  (thanks to makoto)
 
 == 0.0.8
 

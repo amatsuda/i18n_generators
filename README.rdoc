@@ -2,8 +2,8 @@
 
 This gem plugin generates a set of locale files for Rails i18n feature. Supports Rails 5.0, 4.2.x, 4.1.x, 4.0.x, 3.2.x, 3.1.x, 3.0.x, 2.3.x, and 2.2.x.
 
-* http://github.com/amatsuda/i18n_generators
-* http://rubygems.org/gems/i18n_generators
+* https://github.com/amatsuda/i18n_generators
+* https://rubygems.org/gems/i18n_generators
 
 
 == FEATURES

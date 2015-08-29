@@ -36,6 +36,7 @@ class I18nLocaleGenerator < Rails::Generators::NamedBase
     log "fetching #{locale_name}.yml from rails-i18n repository..."
     begin
       get "https://github.com/svenfuchs/rails-i18n/raw/master/rails/locale/#{locale_name}.yml", "config/locales/#{locale_name}.yml"
+      I18n.load_path.unshift "config/locales/#{locale_name}.yml"
     rescue
       log "could not find #{locale_name}.yml on rails-i18n repository"
     end

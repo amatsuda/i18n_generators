@@ -24,6 +24,7 @@ Gem::Specification.new do |s|
 
   s.add_runtime_dependency 'mechanize'
   s.add_runtime_dependency 'rails', '>= 3.0.0'
-  s.add_development_dependency 'rspec'
+  s.add_development_dependency 'test-unit'
+  s.add_development_dependency 'test-unit-rr'
   s.add_development_dependency 'rake'
 end

@@ -47,7 +47,7 @@ module I27r
       end
     end
   end
-  
+
   module BabelFish
     def _translate(word, lang)
       require 'mechanize'
@@ -83,7 +83,6 @@ module I27r
   end
 
   class Translator
-    #include BingTranslator
     include GoogleTranslate2
     def initialize(lang)
       @lang, @cache = lang, {}

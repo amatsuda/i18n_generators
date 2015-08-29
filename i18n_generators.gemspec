@@ -9,8 +9,8 @@ Gem::Specification.new do |s|
   s.authors     = ['Akira Matsuda']
   s.email       = ['ronnie@dio.jp']
   s.homepage    = 'https://github.com/amatsuda/i18n_generators'
-  s.summary     = 'A Rails generator that generates Rails I18n locale files for almost every known locale.'
-  s.description = 'A Rails generator that generates Rails I18n locale files for almost every known locale.'
+  s.summary     = 'A Rails generator that generates Rails I18n locale files with automatic translation for almost every known locale.'
+  s.description = 'A Rails generator that generates Rails I18n locale files with automatic translation for almost every known locale.'
 
   s.rubyforge_project = 'i18n_generators'
 

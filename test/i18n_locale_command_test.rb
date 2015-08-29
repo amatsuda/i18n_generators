@@ -19,7 +19,7 @@ CONFIG
       assert_equal <<-RESULT, @generator.send(:add_locale_config, config)
 module Tes
   class Application < Rails::Application
-    config.i18n.default_locale = 'ja'
+    config.i18n.default_locale = :ja
   end
 end
 RESULT
@@ -37,7 +37,7 @@ CONFIG
       assert_equal <<-RESULT, @generator.send(:add_locale_config, config)
 module Tes
   class Application < Rails::Application
-    config.i18n.default_locale = 'ja'
+    config.i18n.default_locale = :ja
   end
 end
 RESULT
@@ -56,7 +56,7 @@ CONFIG
       assert_equal <<-RESULT, @generator.send(:add_locale_config, config)
 module Tes
   class Application < Rails::Application
-    config.i18n.default_locale = 'ja'
+    config.i18n.default_locale = :ja
     something goes here.
     bla bla bla...
   end

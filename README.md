@@ -1,4 +1,4 @@
-# I18n generators
+# i18n_generators
 
 A Rails plugin that generates the I18n locale files with automatic
 translation. Supporting Rails 5.0, 4.2.x, 4.1.x, 4.0.x, 3.2.x, 3.1.x, 3.0.x,

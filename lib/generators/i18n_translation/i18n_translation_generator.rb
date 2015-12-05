@@ -29,7 +29,7 @@ class I18nTranslationGenerator < Rails::Generators::NamedBase
         yaml[[locale_name.to_s] + parents] = value
       else
         value.each do |key, val|
-          yaml[[locale_name.to_s] + parents + [key]] = val
+          yaml[[locale_name.to_s] + parents + [key.to_s]] = val
         end
       end
     end

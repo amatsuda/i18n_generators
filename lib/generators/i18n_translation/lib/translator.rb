@@ -4,7 +4,7 @@ module I27r
   module GoogleTranslate
     def _translate(word, lang)
       w = CGI.escape ActiveSupport::Inflector.humanize(word)
-      text = Net::HTTP.get URI("https://translate.google.com/translate_a/single?client=t&sl=en&tl=#{lang}&dt=t&q=#{w}")
+      text = Net::HTTP.get URI("https://translate.google.com/translate_a/single?client=gtx&sl=en&tl=#{lang}&dt=t&q=#{w}")
       text.scan(/"(.*?)"/).first.first.tap {|t| t.force_encoding(Encoding::UTF_8) if t.respond_to? :force_encoding}
     end
   end

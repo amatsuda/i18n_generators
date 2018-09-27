@@ -12,8 +12,6 @@ Gem::Specification.new do |s|
   s.summary     = 'A Rails generator that generates Rails I18n locale files with automatic translation for almost every known locale.'
   s.description = 'A Rails generator that generates Rails I18n locale files with automatic translation for almost every known locale.'
 
-  s.rubyforge_project = 'i18n_generators'
-
   s.files         = `git ls-files`.split("\n")
   s.test_files    = `git ls-files -- {test,spec,features}/*`.split("\n")
   s.executables   = `git ls-files -- bin/*`.split("\n").map{ |f| File.basename(f) }

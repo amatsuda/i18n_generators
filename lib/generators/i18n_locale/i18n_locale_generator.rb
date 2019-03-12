@@ -20,7 +20,7 @@ class I18nLocaleGenerator < Rails::Generators::NamedBase
   end
 
   def add_locale_config(config_contents)
-    new_line = "    config.i18n.default_locale = #{locale_name.to_sym.inspect.gsub('"', '\'')}"
+    new_line = "    config.i18n.default_locale = #{locale_name.to_sym.inspect.tr('"', '\'')}"
     if config_contents =~ /\n *config\.i18n\.default_locale *=/
       config_contents.sub(/ *config\.i18n\.default_locale *=.*/, new_line)
     elsif config_contents =~ /\n *#? *config\.i18n\.default_locale *=/
@@ -43,6 +43,6 @@ class I18nLocaleGenerator < Rails::Generators::NamedBase
   end
 
   def locale_name
-    @_locale_name ||= file_name.gsub('_', '-').split('-').each.with_index.map {|s, i| i == 0 ? s : s.upcase}.join('-')
+    @_locale_name ||= file_name.tr('_', '-').split('-').each.with_index.map {|s, i| i == 0 ? s : s.upcase}.join('-')
   end
 end

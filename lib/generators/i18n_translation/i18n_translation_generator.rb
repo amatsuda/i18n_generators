@@ -102,7 +102,7 @@ class I18nTranslationGenerator < Rails::Generators::NamedBase
   end
 
   def locale_name
-    @_locale_name ||= file_name.gsub('_', '-').split('-').each.with_index.map {|s, i| i == 0 ? s : s.upcase}.join('-')
+    @_locale_name ||= file_name.tr('_', '-').split('-').each.with_index.map {|s, i| i == 0 ? s : s.upcase}.join('-')
   end
 
   def include_timestamps?

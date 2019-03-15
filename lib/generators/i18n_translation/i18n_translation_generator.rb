@@ -10,7 +10,12 @@ class I18nTranslationGenerator < Rails::Generators::NamedBase
     end
     log "translating models to #{locale_name}..."
     I18n.locale = locale_name
-    Rails.application.eager_load!
+
+    if Rails.try(:autoloaders).try(:zeitwerk_enabled?)
+      Rails.application.send :eager_load_with_dependencies!
+    else
+      Rails.application.eager_load!
+    end
 
     # activerecord:models comes first
     model_names_translations = order_hash translate_all(model_names_keys)

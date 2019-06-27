@@ -10,9 +10,8 @@ class I18nTranslationGenerator < Rails::Generators::NamedBase
     end
     log "translating models to #{locale_name}..."
     I18n.locale = locale_name
-
     if Rails.try(:autoloaders).try(:zeitwerk_enabled?)
-      Rails.application.send :eager_load_with_dependencies!
+      Zeitwerk::Loader.eager_load_all
     else
       Rails.application.eager_load!
     end

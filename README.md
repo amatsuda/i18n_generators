@@ -8,6 +8,7 @@ Here's an example of generating a translation file (the example model is taken
 from [the Rails Girls app](http://guides.railsgirls.com/app/#create-idea-scaffold)).
 
     % rails g scaffold idea name description:text picture
+    % rails db:migrate
     % rails g i18n ja
 
 ![translation_ja.yml](https://raw.githubusercontent.com/amatsuda/i18n_generators/414e923ae1a6450f0005b486376d084a88938a9e/assets/i18n_ja_example.png)

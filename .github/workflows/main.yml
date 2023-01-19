@@ -18,10 +18,13 @@ jobs:
             rails_version: '5.0'
           - ruby_version: '2.4'
             rails_version: '4.2'
+            bundler_version: '1'
           - ruby_version: '2.3'
             rails_version: '4.1'
+            bundler_version: '1'
           - ruby_version: '2.2'
             rails_version: '4.0'
+            bundler_version: '1'
 
     env:
       RAILS_VERSION: ${{ matrix.rails_version }}
@@ -32,6 +35,7 @@ jobs:
       - uses: ruby/setup-ruby@v1
         with:
           ruby-version: ${{ matrix.ruby_version }}
+          bundler: ${{ matrix.bundler_version }}
           bundler-cache: true
         continue-on-error: ${{ (matrix.ruby_version == 'ruby-head') || contains(matrix.rails_version, 'edge') || (matrix.allow_failures == 'true') }}
 

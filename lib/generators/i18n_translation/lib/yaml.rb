@@ -1,5 +1,6 @@
 begin
   require 'psych'
+  require 'yaml'
 rescue LoadError
   require 'generators/i18n_translation/lib/yaml_waml'
 end
